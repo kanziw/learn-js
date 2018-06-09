@@ -347,3 +347,34 @@ describe('apply', () => {
     expect(curry(testArr)).eql(result)
   })
 })
+
+describe('applySpec', () => {
+  /**
+   * 템플릿에 주어진 함수들을 인자로 실행시켜 템플릿을 만든다.
+   * 모든 요소는 함수로 이루어져 있어야 한다.
+   */
+  it('simple', () => {
+    const spec = {
+      id: R.always('ID'),
+      add: R.add,
+      mul: R.multiply,
+      nestedAdd: { add: R.add, str: R.always('STR') },
+      nestedMul: { mul: [ R.multiply, R.always('M') ] },
+      sum: (...args) => R.sum(args),
+      all: R.all,
+    }
+
+    const getSpec = R.applySpec(spec)
+
+    // R.add & R.multiply is binary function.
+    expect(getSpec(2, 4, 6)).eql({
+      id: 'ID',
+      add: 6,
+      mul: 8,
+      nestedAdd: { add: 6, str: 'STR' },
+      nestedMul: { mul: [ 8, 'M' ] },
+      sum: 12,
+      all: true,
+    })
+  })
+})
