@@ -189,3 +189,22 @@ describe('and', () => {
     expect(0 && '').eql(0)
   })
 })
+
+describe('any', () => {
+  const testArr = [ 1, 2, 3 ]
+  const testerFnTrue = n => n > 1
+  const testerFnFalse = n => n > 5
+
+  it('simple', () => {
+    expect(R.any(testerFnTrue, testArr)).to.be.true
+    expect(R.any(testerFnFalse, testArr)).to.be.false
+  })
+
+  it('curry', () => {
+    const curryTrue = R.any(testerFnTrue)
+    const curryFalse = R.any(testerFnFalse)
+
+    expect(curryTrue(testArr)).to.be.true
+    expect(curryFalse(testArr)).to.be.false
+  })
+})
