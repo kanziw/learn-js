@@ -378,3 +378,21 @@ describe('applySpec', () => {
     })
   })
 })
+
+describe('applyTo', () => {
+  /**
+   * 1번 인자를 2번 함수의 인자로 사용한다.
+   * (arg, fn) => fn(arg)
+   */
+  it('simple', () => {
+    expect(R.applyTo(1, R.add(3))).eql(4)
+  })
+
+  it('curry', () => {
+    const argA = R.applyTo('A')
+    expect(argA(R.always)()).eql('A')
+
+    const arg1 = R.applyTo(1)
+    expect(arg1(R.add(4))).eql(5)
+  })
+})
