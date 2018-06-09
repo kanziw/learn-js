@@ -242,3 +242,53 @@ describe('anyPass', () => {
     expect(R.anyPass([ isStartsWithA, isEndsWithD ], 'abcd')).to.be.an('function')
   })
 })
+
+describe('ap', () => {
+  /**
+   * 배열로 담긴 함수들을 각각 수행하고 그 결과를 concat 한다.
+   * (function[], [...]) => [... ...]
+   */
+
+  const multiply2 = n => n * 2
+  const add10 = n => n + 10
+  const minus10 = n => n - 10
+
+  const addPrefix_ = str => '_' + str
+  const toUpper = str => str.toUpperCase()
+
+  const testFnsNumber = [ multiply2, add10, minus10 ]
+  const testFnsString = [ addPrefix_, toUpper ]
+
+  const testArrNumber = [ 1, 2, 3 ]
+  const testArrString = [ 'kanziw', 'david' ]
+
+  const resultArrNumber = [ 2, 4, 6, 11, 12, 13, -9, -8, -7 ]
+  const resultArrString = [ '_kanziw', '_david', 'KANZIW', 'DAVID' ]
+
+  it('simple', () => {
+    expect(R.ap(testFnsNumber, testArrNumber)).eql(resultArrNumber)
+    expect(R.ap(testFnsString, testArrString)).eql(resultArrString)
+  })
+
+  it('curry', () => {
+    const curryNumber = R.ap(testFnsNumber)
+    expect(curryNumber(testArrNumber)).eql(resultArrNumber)
+
+    const curryString = R.ap(testFnsString)
+    expect(curryString(testArrString)).eql(resultArrString)
+  })
+
+  /**
+   * R.ap can also be used as S combinator when only two functions are passed
+   *
+   * 인자는 2개까지만 인식하며, 이 경우 첫번째 함수는
+   *   "본래의 인자" => "두번째 함수 결과" => //
+   * 의 역할을 수행한다.
+   */
+  it('two function args', () => {
+    expect(R.ap(A => B => [ A, B ].join('___'), R.always('B'))('A')).eql('A___B')
+    let _ = '!'
+    expect(R.ap(R.add, R.always(2), () => _ = '?')(1)).eql(3)
+    expect(_).eql('!')
+  })
+})
