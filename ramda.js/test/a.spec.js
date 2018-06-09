@@ -115,3 +115,37 @@ describe('all', () => {
     expect(curryFalse(testArr)).to.be.false
   })
 })
+
+describe('allPass', () => {
+  /**
+   * R.all 은 array 의 모든 요소가 특정 함수를 통과하느냐 라면
+   * R.allPass 는 특정 한 요소가 여러 함수의 조건을 모두 만족하는가 를 확인한다.
+   *
+   * iterable 한 첫번째 인자만 허용하며, 즉시실행 용으론 사용할 수 없다.
+   */
+
+  const isStartsWithA = str => str.startsWith('a')
+  const isEndsWithD = str => str.endsWith('d')
+
+  it('simple', () => {
+    const isStartsWithAAndEndsWithD = R.allPass([ isStartsWithA, isEndsWithD ])
+    expect(isStartsWithAAndEndsWithD('abcd')).to.be.true
+    expect(isStartsWithAAndEndsWithD('abc')).to.be.false
+  })
+
+  it('only one argument', () => {
+    const isStartsWithAAndEndsWithD = R.allPass([ isStartsWithA ], [ isEndsWithD ])
+    expect(isStartsWithAAndEndsWithD('abcd')).to.be.true
+    // ???????????!!!!!!!!!!
+    expect(isStartsWithAAndEndsWithD('abc')).to.be.true
+  })
+
+  it('argument should be array', () => {
+    expect(() => R.allPass(isStartsWithA)).throw('list must be array or iterable')
+  })
+
+  it('only curry', () => {
+    expect(R.allPass([ isStartsWithA, isEndsWithD ], 'abcd')).to.not.be.an('boolean')
+    expect(R.allPass([ isStartsWithA, isEndsWithD ], 'abcd')).to.be.an('function')
+  })
+})
