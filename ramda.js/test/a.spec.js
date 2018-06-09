@@ -431,4 +431,38 @@ describe('assoc', () => {
     expect(curryKeyAndValue).to.be.an('function')
     expect(curryKeyAndValue(testObj)).eql(resultObj)
   })
+
+  it('do not support deep path', () => {
+    const testObj = { a: { b: { c: 0 } } }
+    expect(R.assoc([ 'a', 'b', 'c' ], 3, testObj)).eql({ a: { b: { c: 0 } }, 'a,b,c': 3 })
+    expect(R.assoc('a.b.c', 3, testObj)).eql({ a: { b: { c: 0 } }, 'a.b.c': 3 })
+  })
+})
+
+describe('assocPath', () => {
+  const testObj = { a: { b: { c: 0 } } }
+  const resultObj = { a: { b: { c: 3 } } }
+
+  it('simple', () => {
+    expect(R.assocPath([ 'a', 'b', 'c' ], 3, testObj)).eql(resultObj)
+    expect(testObj).eql({ a: { b: { c: 0 } } })
+  })
+
+  it('array idx supported', () => {
+    const testObj = { a: [ { c: 0 } ] }
+    const resultObj = { a: [ { c: 3 } ] }
+
+    expect(R.assocPath([ 'a', 0, 'c' ], 3, testObj)).eql(resultObj)
+    expect(testObj).eql({ a: [ { c: 0 } ] })
+  })
+
+  it('curry', () => {
+    const curryKey = R.assocPath([ 'a', 'b', 'c' ])
+    expect(curryKey).to.be.an('function')
+    expect(curryKey(3, resultObj)).eql(resultObj)
+
+    const curryKeyAndValue = curryKey(3)
+    expect(curryKeyAndValue).to.be.an('function')
+    expect(curryKeyAndValue(testObj)).eql(resultObj)
+  })
 })
