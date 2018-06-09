@@ -407,3 +407,28 @@ describe('ascend', () => {
     expect([ { a: 5 }, { a: 0 } ].sort(R.ascend(x => x.a))).eql([ { a: 0 }, { a: 5 } ])
   })
 })
+
+describe('assoc', () => {
+  /**
+   * (key, value, obj) => obj /w {key: value}
+   * key 가 중복되면 overriding 한다.
+   * copy 된 객체가 반환된다.
+   */
+  const testObj = { a: 1, b: 2, c: -1 }
+  const resultObj = { a: 1, b: 2, c: 3 }
+
+  it('simple', () => {
+    expect(R.assoc('c', 3, testObj)).eql(resultObj)
+    expect(testObj).eql({ a: 1, b: 2, c: -1 })
+  })
+
+  it('curry', () => {
+    const curryKey = R.assoc('c')
+    expect(curryKey).to.be.an('function')
+    expect(curryKey(3, resultObj)).eql(resultObj)
+
+    const curryKeyAndValue = curryKey(3)
+    expect(curryKeyAndValue).to.be.an('function')
+    expect(curryKeyAndValue(testObj)).eql(resultObj)
+  })
+})
