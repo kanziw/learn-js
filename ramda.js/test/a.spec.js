@@ -96,3 +96,22 @@ describe('adjust', () => {
     expect(curry2(testArr)).eql(resultArr)
   })
 })
+
+describe('all', () => {
+  const testArr = [ 1, 2, 3 ]
+  const testerFnTrue = n => n > 0
+  const testerFnFalse = n => n > 1
+
+  it('simple', () => {
+    expect(R.all(testerFnTrue, testArr)).to.be.true
+    expect(R.all(testerFnFalse, testArr)).to.be.false
+  })
+
+  it('curry', () => {
+    const curryTrue = R.all(testerFnTrue)
+    const curryFalse = R.all(testerFnFalse)
+
+    expect(curryTrue(testArr)).to.be.true
+    expect(curryFalse(testArr)).to.be.false
+  })
+})
