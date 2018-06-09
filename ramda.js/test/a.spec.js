@@ -149,3 +149,21 @@ describe('allPass', () => {
     expect(R.allPass([ isStartsWithA, isEndsWithD ], 'abcd')).to.be.an('function')
   })
 })
+
+describe('always', () => {
+  /**
+   * Returns a function that always returns the given value.
+   * Note that for non-primitives the value returned is a reference to the original value.
+   *
+   * 항상 자기 자신을 반환한다.
+   */
+
+  it('simple', () => {
+    const getTrue = R.always(true)
+    expect(getTrue).to.be.an('function')
+    expect(getTrue()).to.be.true
+
+    const testArr = [ 1, 'a', {}, { a: 1 }, [], [ 1, false ] ]
+    testArr.forEach(val => expect(R.always(val)()).eql(val))
+  })
+})
