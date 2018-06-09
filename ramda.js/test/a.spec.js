@@ -167,3 +167,25 @@ describe('always', () => {
     testArr.forEach(val => expect(R.always(val)()).eql(val))
   })
 })
+
+describe('and', () => {
+  it('simple', () => {
+    expect(R.and(true, true)).eql(true)
+    expect(R.and(true, false)).eql(false)
+    expect(R.and(false, true)).eql(false)
+    expect(R.and(false, false)).eql(false)
+  })
+
+  it('마지막 falsy 한 값, 또는 마지막 값이 반환된다.', () => {
+    expect(R.and(1, 'a')).eql('a')
+    expect(R.and(1, '')).eql('')
+    expect(R.and(0, 'a')).eql(0)
+    expect(R.and(0, '')).eql(0)
+
+    // like &&
+    expect(1 && 'a').eql('a')
+    expect(1 && '').eql('')
+    expect(0 && 'a').eql(0)
+    expect(0 && '').eql(0)
+  })
+})
