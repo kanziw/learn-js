@@ -292,3 +292,25 @@ describe('ap', () => {
     expect(_).eql('!')
   })
 })
+
+describe('aperture', () => {
+  /**
+   * (n, array) => [][] || []
+   * array 에 담긴 요소를 n 개씩 차례로 묶어 반환한다.
+   * array.length > n 인 경우 빈 배열이 반환된다.
+   */
+  it('simple', () => {
+    expect(R.aperture(2, [ 1, 2, 3, 4, 5 ])).eql([ [ 1, 2 ], [ 2, 3 ], [ 3, 4 ], [ 4, 5 ] ])
+    expect(R.aperture(3, [ 1, 2, 3, 4, 5 ])).eql([ [ 1, 2, 3 ], [ 2, 3, 4 ], [ 3, 4, 5 ] ])
+    expect(R.aperture(5, [ 1, 2, 3, 4, 5 ])).eql([ [ 1, 2, 3, 4, 5 ] ])
+    expect(R.aperture(6, [ 1, 2, 3, 4, 5 ])).eql([])
+  })
+
+  it('curry', () => {
+    const curry5 = R.aperture(5)
+    expect(curry5([ 1, 2, 3, 4, 5 ])).eql([ [ 1, 2, 3, 4, 5 ] ])
+
+    const curry6 = R.aperture(6)
+    expect(curry6([ 1, 2, 3, 4, 5 ])).eql([])
+  })
+})
