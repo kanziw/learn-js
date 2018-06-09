@@ -332,3 +332,18 @@ describe('append', () => {
     expect(curry([ 2 ])).eql([ 2, 1 ])
   })
 })
+
+describe('apply', () => {
+  const testArr = [ 1, 2, 3, -99, 42, 6, 7 ]
+  const result = 42
+
+  it('simple', () => {
+    expect(Math.max(...testArr)).eql(result)
+    expect(R.apply(Math.max, testArr)).eql(result)
+  })
+
+  it('curry', () => {
+    const curry = R.apply(Math.max)
+    expect(curry(testArr)).eql(result)
+  })
+})
