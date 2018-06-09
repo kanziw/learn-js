@@ -30,8 +30,8 @@ describe('addIndex', () => {
     const filteredArr = [ 'two', 'four' ]
 
     expect(R.filter((val, idx, arr) => {
-      expect(idx).to.be.an('undefined')
-      expect(arr).to.be.an('undefined')
+      expect(idx).to.be.undefined
+      expect(arr).to.be.undefined
       return val === 'two' || val === 'four'
     }, testArr)).eql(filteredArr)
 
@@ -51,8 +51,8 @@ describe('addIndex', () => {
 
     let _idx = 0
     expect(R.map((val, idx, arr) => {
-      expect(idx).to.be.an('undefined')
-      expect(arr).to.be.an('undefined')
+      expect(idx).to.be.undefined
+      expect(arr).to.be.undefined
       return _idx++ + '-' + val
     }, testArr)).eql(mappedArr)
 
@@ -65,5 +65,34 @@ describe('addIndex', () => {
 
     const curried = mapIndexed((val, idx) => idx + '-' + val)
     expect(curried(testArr)).eql(mappedArr)
+  })
+})
+
+describe('adjust', () => {
+  /**
+   * Applies a function to the value at the given index of an array,
+   * returning a new copy of the array with the element at the given index replaced
+   * with the result of the function application.
+   *
+   * (function, idx, array) => //
+   * Array 의 idx 요소에 function 을 수행한다.
+   */
+
+  const testArr = [ 1, 2, 3 ]
+  const resultArr = [ 1, 12, 3 ]
+  const add10 = R.add(10)
+
+  it('simple', () => {
+    expect(R.adjust(add10, 1, testArr)).eql(resultArr)
+  })
+
+  it('curry', () => {
+    const curry1 = R.adjust(add10)
+    expect(curry1).to.be.an('function')
+    expect(curry1(1)(testArr)).eql(resultArr)
+
+    const curry2 = curry1(1)
+    expect(curry2).to.be.an('function')
+    expect(curry2(testArr)).eql(resultArr)
   })
 })
