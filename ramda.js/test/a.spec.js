@@ -314,3 +314,21 @@ describe('aperture', () => {
     expect(curry6([ 1, 2, 3, 4, 5 ])).eql([])
   })
 })
+
+describe('append', () => {
+  /**
+   * array 뒤쪽에 요소를 추가한다.
+   */
+  it('simple', () => {
+    expect(R.append(1, [])).eql([ 1 ])
+    expect(R.append(1, [ 2 ])).eql([ 2, 1 ])
+    expect(R.append(1, [ 2, 3 ])).eql([ 2, 3, 1 ])
+    expect(R.append([ 1 ], [ 2, 3 ])).eql([ 2, 3, [ 1 ] ])
+  })
+
+  it('curry', () => {
+    const curry = R.append(1)
+    expect(curry([])).eql([ 1 ])
+    expect(curry([ 2 ])).eql([ 2, 1 ])
+  })
+})
