@@ -396,3 +396,14 @@ describe('applyTo', () => {
     expect(arg1(R.add(4))).eql(5)
   })
 })
+
+describe('ascend', () => {
+  /**
+   * Makes an ascending comparator function out of a function that returns a value that can be compared with < and >.
+   * 오름차순으로 정렬하기 위해 사용될 comparator function 을 반환한다.
+   */
+  it('simple', () => {
+    expect([ 1, 3, 0, 2, 5, 4 ].sort(R.ascend(R.identity))).eql([ 0, 1, 2, 3, 4, 5 ])
+    expect([ { a: 5 }, { a: 0 } ].sort(R.ascend(x => x.a))).eql([ { a: 0 }, { a: 5 } ])
+  })
+})
