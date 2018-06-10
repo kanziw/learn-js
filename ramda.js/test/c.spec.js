@@ -81,3 +81,21 @@ describe('clone', () => {
     expect(orgObj[ 0 ] === cloneObj[ 0 ]).to.be.false
   })
 })
+
+describe('comparator', () => {
+  it('simple', () => {
+    const byAge = R.comparator((a, b) => a.age < b.age)
+    const people = [
+      { name: 'kanziw', age: 20 },
+      { name: 'david', age: 30 },
+      { name: 'reese', age: 10 },
+    ]
+    const sortedPeople = [
+      { name: 'reese', age: 10 },
+      { name: 'kanziw', age: 20 },
+      { name: 'david', age: 30 },
+    ]
+
+    expect(R.sort(byAge, people)).eql(sortedPeople)
+  })
+})
