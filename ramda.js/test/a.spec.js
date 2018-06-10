@@ -169,6 +169,10 @@ describe('always', () => {
 })
 
 describe('and', () => {
+  /**
+   * see also R.both
+   */
+
   it('simple', () => {
     expect(R.and(true, true)).eql(true)
     expect(R.and(true, false)).eql(false)

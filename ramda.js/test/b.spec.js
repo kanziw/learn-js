@@ -31,3 +31,44 @@ describe('bind', () => {
     expect(getThis()).eql(newThis)
   })
 })
+
+describe('both', () => {
+  /**
+   * See also R.and
+   */
+
+  it('simple', () => {
+    const getTrue = R.always(true)
+    const getFalse = R.always(false)
+
+    const TnT = R.both(getTrue, getTrue)
+    const TnF = R.both(getTrue, getFalse)
+    const FnT = R.both(getFalse, getTrue)
+    const FnF = R.both(getFalse, getFalse)
+
+    expect(TnT()).eql(true)
+    expect(TnF()).eql(false)
+    expect(FnT()).eql(false)
+    expect(FnF()).eql(false)
+  })
+
+  it('get latest value if true. if false, get first falsy value.', () => {
+    const getA = R.always('A')
+    const getZ = R.always(0)
+
+    const AnA = R.both(getA, getA)
+    const ZnA = R.both(getZ, getA)
+    const AnZ = R.both(getA, getZ)
+    const ZnZ = R.both(getZ, getZ)
+
+    expect(AnA()).eql(getA())
+    expect(ZnA()).eql(getZ())
+    expect(AnZ()).eql(getZ())
+    expect(ZnZ()).eql(getZ())
+
+    expect(getA() && getA()).eql(getA())
+    expect(getA() && getZ()).eql(getZ())
+    expect(getZ() && getA()).eql(getZ())
+    expect(getZ() && getZ()).eql(getZ())
+  })
+})
