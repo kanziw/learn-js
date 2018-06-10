@@ -12,3 +12,22 @@ describe('binary', () => {
     expect(takesTwoArgs(1, 2, 3)).eql([ 1, 2, undefined ])
   })
 })
+
+describe('bind', () => {
+  const newThis = { a: 'THIS' }
+  const returnThis = function () { return this }
+
+  it('simple', () => {
+    const getThis = R.bind(returnThis, newThis)
+    expect(getThis()).eql(newThis)
+  })
+
+  it('curry', () => {
+    const curry = R.bind(returnThis)
+    expect(curry).to.be.an('function')
+
+    const getThis = curry(newThis)
+    expect(getThis).to.be.an('function')
+    expect(getThis()).eql(newThis)
+  })
+})
