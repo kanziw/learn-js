@@ -99,3 +99,27 @@ describe('comparator', () => {
     expect(R.sort(byAge, people)).eql(sortedPeople)
   })
 })
+
+describe('complement', () => {
+  /**
+   * 함수 결과값의 boolean 값을 뒤집는다.
+   */
+  it('simple', () => {
+    const isNull = v => v === null
+    const isNotNull = R.complement(isNull)
+
+    expect(isNull(null)).eql(true)
+    expect(isNotNull(null)).eql(false)
+    expect(isNull(7)).eql(false)
+    expect(isNotNull(7)).eql(true)
+  })
+
+  it('non boolean', () => {
+    const add1 = R.add(1)
+
+    const aa = R.complement(add1)
+    expect(aa(-2)).eql(false)
+    expect(aa(-1)).eql(true)
+    expect(aa(2)).eql(false)
+  })
+})
