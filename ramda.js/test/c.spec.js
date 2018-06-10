@@ -70,3 +70,14 @@ describe('clamp', () => {
     expect(curry(E)).eql(D)
   })
 })
+
+describe('clone', () => {
+  it('simple', () => {
+    const orgObj = [ {}, {} ]
+    const cloneObj = R.clone(orgObj)
+
+    expect(cloneObj).eql(orgObj)
+    expect(orgObj === cloneObj).to.be.false
+    expect(orgObj[ 0 ] === cloneObj[ 0 ]).to.be.false
+  })
+})
