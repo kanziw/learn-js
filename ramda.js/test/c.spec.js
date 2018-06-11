@@ -290,3 +290,18 @@ describe('contains', () => {
     expect(R.contains(4)([ 1, 2, 3 ])).to.be.false
   })
 })
+
+describe('converge', () => {
+  it('simple', () => {
+    const average = R.converge(R.divide, [ R.sum, R.length ])
+    expect(average([ 1, 2, 3, 4, 5, 6, 7 ])).eql(4)
+
+    const strangeConcat = R.converge(R.concat, [ R.toUpper, R.toLower ])
+    expect(strangeConcat('Yodel')).eql('YODELyodel')
+  })
+
+  it('curry', () => {
+    const average = R.converge(R.divide)([ R.sum, R.length ])
+    expect(average([ 1, 2, 3, 4, 5, 6, 7 ])).eql(4)
+  })
+})
