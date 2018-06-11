@@ -305,3 +305,21 @@ describe('converge', () => {
     expect(average([ 1, 2, 3, 4, 5, 6, 7 ])).eql(4)
   })
 })
+
+describe('countBy', () => {
+  const numbers = [ 1.0, 1.1, 1.2, 2.0, 3.0, 2.2 ]
+  const letters = [ 'a', 'b', 'A', 'a', 'B', 'c' ]
+
+  const retNumbers = { '1': 3, '2': 2, '3': 1 }
+  const retLetters = { 'a': 3, 'b': 2, 'c': 1 }
+
+  it('simple', () => {
+    expect(R.countBy(Math.floor, numbers)).eql(retNumbers)
+    expect(R.countBy(R.toLower, letters)).eql(retLetters)
+  })
+
+  it('curry', () => {
+    expect(R.countBy(Math.floor)(numbers)).eql(retNumbers)
+    expect(R.countBy(R.toLower)(letters)).eql(retLetters)
+  })
+})
