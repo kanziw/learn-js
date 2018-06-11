@@ -231,3 +231,50 @@ describe('cond', () => {
     expect(hum()).eql('hum')
   })
 })
+
+describe('construct', () => {
+  class Human {
+    constructor (name) {
+      this.name = name
+    }
+
+    writeMyName () {
+      return `My name is ${this.name}.`
+    }
+  }
+
+  it('simple', () => {
+    const constructor = R.construct(Human)
+
+    const kanziw = constructor('kanziw')
+    expect(kanziw).to.be.an.instanceOf(Human)
+    expect(kanziw.writeMyName()).eql(`My name is kanziw.`)
+  })
+})
+
+describe('constructN', () => {
+  class Human {
+    constructor (firstName, lastName, nickName) {
+      this.firstName = firstName
+      this.lastName = lastName
+      this.nickName = nickName
+    }
+
+    getNames () {
+      return [ this.firstName, this.lastName, this.nickName ]
+    }
+  }
+
+  it('simple', () => {
+    const constructor = R.constructN(3, Human)
+    const names = [ 'Ji Woong', 'Jung', 'kanziw' ]
+
+    const curry1 = constructor('Ji Woong')
+    expect(curry1).to.be.an('function')
+    expect(curry1('Jung')('kanziw').getNames()).eql(names)
+
+    const curry2 = curry1('Jung')
+    expect(curry2).to.be.an('function')
+    expect(curry2('kanziw').getNames()).eql(names)
+  })
+})
