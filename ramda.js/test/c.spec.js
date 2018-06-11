@@ -323,3 +323,49 @@ describe('countBy', () => {
     expect(R.countBy(R.toLower)(letters)).eql(retLetters)
   })
 })
+
+describe('curry', () => {
+  const calculate4Numbers = (a, b, c, d) => (a - b) / (c + d)
+  expect(calculate4Numbers(9, 3, 2, 4)).eql(1)
+  const curry = R.curry(calculate4Numbers)
+
+  it('simple', () => {
+    expect(curry(9)(3, 2, 4)).eql(1)
+    expect(curry(9)(3, 2)(4)).eql(1)
+    expect(curry(9)(3, 2, 4)).eql(1)
+    expect(curry(9)(3)(2, 4)).eql(1)
+    expect(curry(9)(3)(2)(4)).eql(1)
+  })
+
+  it('R.__', () => {
+    const _curry = curry(R.__, R.__, R.__, R.__)
+    expect(_curry(9)(3, 2, 4)).eql(1)
+    expect(_curry(9)(3, 2)(4)).eql(1)
+    expect(_curry(9)(3, 2, 4)).eql(1)
+    expect(_curry(9)(3)(2, 4)).eql(1)
+    expect(_curry(9)(3)(2)(4)).eql(1)
+
+    const cu_rr_y = curry(9, R.__, 2, R.__)
+    expect(cu_rr_y(3, 4)).eql(1)
+    expect(cu_rr_y(R.__, 4)(3)).eql(1)
+  })
+})
+
+describe('curryN', () => {
+  /**
+   * currying 할 인자의 개수를 제한한다.
+   */
+  it('simple', () => {
+    const sumArgs = (...args) => R.sum(args)
+
+    const curriedAddFourNumbers = R.curryN(4, sumArgs)
+    const f = curriedAddFourNumbers(1, 2)
+    expect(f).to.be.an('function')
+    expect(f(3, 4)).eql(10)
+    expect(f(3)(4)).eql(10)
+
+    const g = f(3)
+    expect(g).to.be.an('function')
+    expect(g(4)).eql(10)
+  })
+})
