@@ -195,3 +195,16 @@ describe('composeP', () => {
     expect(() => R.composeP(getAP, getBP, getA)()).throw('f.apply(...).then is not a function')
   })
 })
+
+describe('concat', () => {
+  it('simple', () => {
+    expect(R.concat('ABC', 'DEF')).eql('ABCDEF')
+    expect(R.concat([ 4, 5, 6 ], [ 1, 2, 3 ])).eql([ 4, 5, 6, 1, 2, 3 ])
+    expect(R.concat([], [])).eql([])
+  })
+
+  it('curry', () => {
+    expect(R.concat('ABC')('DEF')).eql('ABCDEF')
+    expect(R.concat([])([])).eql([])
+  })
+})
