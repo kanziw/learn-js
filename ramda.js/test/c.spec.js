@@ -1,5 +1,6 @@
 const R = require('ramda')
 const expect = require('chai').expect
+const Maybe = require('ramda-fantasy').Maybe
 
 describe('call', () => {
   it('simple', () => {
@@ -121,5 +122,76 @@ describe('complement', () => {
     expect(aa(-2)).eql(false)
     expect(aa(-1)).eql(true)
     expect(aa(2)).eql(false)
+  })
+})
+
+describe('compose', () => {
+  /**
+   * compose(f, g)(x) => f(g(x))
+   */
+  it('simple', () => {
+    expect(R.compose(Math.abs, R.add(1), R.multiply(2))(-4)).eql(7)
+  })
+})
+
+describe('composeK', () => {
+  /**
+   * Returns the right-to-left Kleisli composition of the provided functions,
+   * each of which must return a value of a type supported by chain.
+   * R.composeK(h, g, f) is equivalent to R.compose(R.chain(h), R.chain(g), f).
+   *
+   * Monad 를 만족하는 데이터를 체이닝으로 compose 하는...가보다.
+   */
+  it('simple', () => {
+    const get = R.curry((propName, obj) => Maybe(obj[ propName ]))
+
+    const getStateCode = R.composeK(
+      R.compose(Maybe.of, R.toUpper),
+      get('state'),
+      get('address'),
+      get('user'),
+    )
+
+    expect(getStateCode({ 'user': { 'address': { 'state': 'ny' } } })).eql(Maybe.Just('NY'))
+    expect(getStateCode({})).eql(Maybe.Nothing())
+  })
+})
+
+describe('composeP', () => {
+  /**
+   * composeP 로 compose 되는 경우, 처음 함수는 무조건 Promise 를 반환해야 한다.
+   * 처음만 Promise 를 반환하면 중간의 함수들은 Promise 반환 여부와 상관 없다.
+   */
+  it('simple', async () => {
+    const db = {
+      users: {
+        JOE: {
+          name: 'Joe',
+          followers: [ 'STEVE', 'SUZY' ]
+        }
+      }
+    }
+
+    const resultArr = db.users.JOE.followers
+
+    const lookupUser = (userId) => Promise.resolve(db.users[ userId ])
+    const lookupFollowers = (user) => user.followers
+    expect(await lookupUser('JOE').then(lookupFollowers)).eql(resultArr)
+
+    const headCharacterOfFollowersForUser = R.composeP(R.head, R.head, lookupFollowers, lookupUser)
+    expect(await headCharacterOfFollowersForUser('JOE')).eql('S')
+  })
+
+  it('first fn should return promise', async () => {
+    const AAA = [ 'AAA', 'AAA' ]
+    const BBB = [ 'BBB', 'BBB' ]
+
+    const getA = () => AAA
+    const getB = () => BBB
+    const getAP = () => Promise.resolve(AAA)
+    const getBP = () => Promise.resolve(BBB)
+
+    expect(await R.composeP(getB, getAP, getA, getBP)()).eql(BBB)
+    expect(() => R.composeP(getAP, getBP, getA)()).throw('f.apply(...).then is not a function')
   })
 })

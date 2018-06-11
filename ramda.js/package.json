@@ -5,11 +5,9 @@
   "author": "kanziw",
   "license": "MIT",
   "private": false,
-  "engines": {
-    "node": ">=8.11.1"
-  },
   "dependencies": {
-    "ramda": "^0.25.0"
+    "ramda": "^0.25.0",
+    "ramda-fantasy": "^0.8.0"
   },
   "devDependencies": {
     "@types/chai": "^4.1.3",
