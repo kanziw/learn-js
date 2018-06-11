@@ -208,3 +208,26 @@ describe('concat', () => {
     expect(R.concat([])([])).eql([])
   })
 })
+
+describe('cond', () => {
+  it('simple', () => {
+    const getNumberType = R.cond([
+      [ n => Number.isNaN(parseInt(n, 10)), R.always('NOT NUMBER') ],
+      [ n => n < 0, R.always('MINUS') ],
+      [ n => n === 0, R.always('ZERO') ],
+      [ n => n > 0, R.always('PLUS') ],
+      [ R.T, R.always('WTF!') ]
+    ])
+
+    expect(getNumberType('STRING')).eql('NOT NUMBER')
+    expect(getNumberType(-3)).eql('MINUS')
+    expect(getNumberType(0)).eql('ZERO')
+    expect(getNumberType(4523)).eql('PLUS')
+  })
+
+  it('not curry', () => {
+    const hum = R.cond([ [ R.T, R.always('hum') ] ], '??')
+    expect(hum).to.be.an('function')
+    expect(hum()).eql('hum')
+  })
+})
