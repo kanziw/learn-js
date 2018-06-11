@@ -278,3 +278,15 @@ describe('constructN', () => {
     expect(curry2('kanziw').getNames()).eql(names)
   })
 })
+
+describe('contains', () => {
+  it('simple', () => {
+    expect(R.contains(1, [ 1, 2, 3 ])).to.be.true
+    expect(R.contains(4, [ 1, 2, 3 ])).to.be.false
+  })
+
+  it('curry', () => {
+    expect(R.contains(1)([ 1, 2, 3 ])).to.be.true
+    expect(R.contains(4)([ 1, 2, 3 ])).to.be.false
+  })
+})
