@@ -204,3 +204,60 @@ describe('dropRepeatsWith', () => {
     expect(R.dropRepeatsWith(compFn)(testArr)).eql(resultArr)
   })
 })
+
+describe('dropWhile', () => {
+  /**
+   * Returns a new list excluding the leading elements of a given list which satisfy the supplied predicate function.
+   * It passes each value to the supplied predicate function, skipping elements while the predicate function returns true.
+   * The predicate function is applied to one argument: (value).
+   *
+   * Dispatches to the dropWhile method of the second argument, if present.
+   * Acts as a transducer if a transformer is given in list position.
+   *
+   * (compFn, array) => array
+   * compFn 의 결과가 false 값이 나올 때 까지 앞의 요소들을 제거한다.
+   */
+
+  const testArr = [ 1, 2, 3, 4, 3, 2, 1 ]
+
+  it('simple', () => {
+    expect(R.dropWhile(n => n <= 2, testArr)).eql([ 3, 4, 3, 2, 1 ])
+    expect(R.dropWhile(n => n < 10, testArr)).eql([])
+
+    expect(R.dropWhile(s => s !== 'i', 'kanziw')).eql('iw')
+    expect(R.dropWhile(s => s !== 'y', 'kanziw')).eql('')
+  })
+
+  it('curry', () => {
+    expect(R.dropWhile(n => n <= 2)(testArr)).eql([ 3, 4, 3, 2, 1 ])
+    expect(R.dropWhile(n => n < 10)(testArr)).eql([])
+
+    expect(R.dropWhile(s => s !== 'i')('kanziw')).eql('iw')
+    expect(R.dropWhile(s => s !== 'y')('kanziw')).eql('')
+  })
+})
+
+describe('dropLastWhile', () => {
+  /**
+   * (compFn, array) => array
+   * compFn 의 결과가 false 값이 나올 때 까지 뒤 요소들을 제거한다.
+   */
+
+  const testArr = [ 1, 2, 3, 4, 3, 2, 1 ]
+
+  it('simple', () => {
+    expect(R.dropLastWhile(n => n <= 2, testArr)).eql([ 1, 2, 3, 4, 3 ])
+    expect(R.dropLastWhile(n => n < 10, testArr)).eql([])
+
+    expect(R.dropLastWhile(s => s !== 'i', 'kanziw')).eql('kanzi')
+    expect(R.dropLastWhile(s => s !== 'y', 'kanziw')).eql('')
+  })
+
+  it('curry', () => {
+    expect(R.dropLastWhile(n => n <= 2)(testArr)).eql([ 1, 2, 3, 4, 3 ])
+    expect(R.dropLastWhile(n => n < 10)(testArr)).eql([])
+
+    expect(R.dropLastWhile(s => s !== 'i')('kanziw')).eql('kanzi')
+    expect(R.dropLastWhile(s => s !== 'y')('kanziw')).eql('')
+  })
+})
