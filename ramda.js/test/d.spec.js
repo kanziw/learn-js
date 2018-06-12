@@ -121,3 +121,48 @@ describe('divide', () => {
     expect(reciprocal(4)).eql(0.25)
   })
 })
+
+describe('drop', () => {
+  /**
+   * Returns all but the first n elements of the given list, string, or transducer/transformer (or object with a drop method).
+   * Dispatches to the drop method of the second argument, if present.
+   *
+   * (number, array or string) => array or string
+   * 앞에서 number 개수만큼 요소를 제거한 결과를 반환한다.
+   */
+  it('simple', () => {
+    expect(R.drop(2, [ 1, 2, 3, 4 ])).eql([ 3, 4 ])
+    expect(R.drop(3, [ 1, 2, 3, 4 ])).eql([ 4 ])
+    expect(R.drop(4, [ 1, 2, 3, 4 ])).eql([])
+    expect(R.drop(5, [ 1, 2, 3, 4 ])).eql([])
+
+    expect(R.drop(5, 'kanziw')).eql('w')
+    expect(R.drop(6, 'kanziw')).eql('')
+    expect(R.drop(7, 'kanziw')).eql('')
+  })
+
+  it('curry', () => {
+    expect(R.drop(5)('kanziw')).eql('w')
+  })
+})
+
+describe('dropLast', () => {
+  /**
+   * (number, array or string) => array or string
+   * 뒤에서 number 개수만큼 요소를 제거한 결과를 반환한다.
+   */
+  it('simple', () => {
+    expect(R.dropLast(2, [ 1, 2, 3, 4 ])).eql([ 1, 2 ])
+    expect(R.dropLast(3, [ 1, 2, 3, 4 ])).eql([ 1 ])
+    expect(R.dropLast(4, [ 1, 2, 3, 4 ])).eql([])
+    expect(R.dropLast(5, [ 1, 2, 3, 4 ])).eql([])
+
+    expect(R.dropLast(5, 'kanziw')).eql('k')
+    expect(R.dropLast(6, 'kanziw')).eql('')
+    expect(R.dropLast(7, 'kanziw')).eql('')
+  })
+
+  it('curry', () => {
+    expect(R.dropLast(5)('kanziw')).eql('k')
+  })
+})
