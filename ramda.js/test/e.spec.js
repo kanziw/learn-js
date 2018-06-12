@@ -36,3 +36,12 @@ describe('either', () => {
     expect(compFn('david')).eql(0)
   })
 })
+
+describe('empty', () => {
+  it('simple', () => {
+    // expect(R.empty(Maybe.Just(42))).eql(Maybe.Nothing())
+    expect(R.empty([ 1, 2, 3 ])).eql([])
+    expect(R.empty('unicorns')).eql('')
+    expect(R.empty({ x: 1, y: 2 })).eql({})
+  })
+})
