@@ -63,3 +63,46 @@ describe('differenceWith', () => {
     expect(R.difference(l1, l2)).eql([ { a: 1 }, { a: 2 } ])
   })
 })
+
+describe('dissoc', () => {
+  /**
+   * Returns a new object that does not contain a `prop` property.
+   * `prop` 에 해당하는 key 를 object 에서 제외한 새로운 Object 를 반환한다.
+   */
+  it('simple', () => {
+    expect(R.dissoc('b', { a: 1, b: 2, c: 3 })).eql({ a: 1, c: 3 })
+  })
+
+  it('curry', () => {
+    const curry = R.dissoc('b')
+    expect(curry({ a: 1, b: 2, c: 3 })).eql({ a: 1, c: 3 })
+  })
+})
+
+describe('dissocPath', () => {
+  /**
+   * Makes a shallow clone of an object, omitting the property at the given path.
+   * Note that this copies and flattens prototype properties onto the new object as well.
+   * All non-primitive properties are copied by reference.
+   *
+   * (pathArray, object) => object
+   * pathArray 에 있는 key 값이 제거된, 복사된 object 가 반환된다.
+   */
+
+  const testObj = { a: { b: { c: 42, d: [ 40, { e: 5, f: 6 } ] } } }
+  const resultObj = { a: { b: { d: [ 40, { e: 5, f: 6 } ] } } }
+  const resultArr = { a: { b: { c: 42, d: [ 40, { f: 6 } ] } } }
+
+  it('simple', () => {
+    expect(R.dissocPath([ 'a', 'b', 'c' ], testObj)).eql(resultObj)
+  })
+
+  it('curry', () => {
+    const curry = R.dissocPath([ 'a', 'b', 'c' ])
+    expect(curry(testObj)).eql(resultObj)
+  })
+
+  it('array path supported', () => {
+    expect(R.dissocPath([ 'a', 'b', 'd', 1, 'e' ], testObj)).eql(resultArr)
+  })
+})
