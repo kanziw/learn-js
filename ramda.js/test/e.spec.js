@@ -45,3 +45,32 @@ describe('empty', () => {
     expect(R.empty({ x: 1, y: 2 })).eql({})
   })
 })
+
+describe('endsWith', () => {
+  /**
+   * (stringProp, string) => boolean
+   * (arrayProp, array) => boolean
+   * 마지막에 해당하는 요소가 있는가?
+   */
+  it('simple', () => {
+    expect(R.endsWith('c', 'abc')).eql(true)
+    expect(R.endsWith('b', 'abc')).eql(false)
+
+    expect(R.endsWith([ 'c' ], [ 'a', 'b', 'c' ])).eql(true)
+    expect(R.endsWith([ 'b', 'c' ], [ 'a', 'b', 'c' ])).eql(true)
+
+    expect(R.endsWith([ 'b' ], [ 'a', 'b', 'c' ])).eql(false)
+    expect(R.endsWith('c', [ 'a', 'b', 'c' ])).eql(false)
+  })
+
+  it('curry', () => {
+    expect(R.endsWith('c')('abc')).eql(true)
+    expect(R.endsWith('b')('abc')).eql(false)
+
+    expect(R.endsWith([ 'c' ])([ 'a', 'b', 'c' ])).eql(true)
+    expect(R.endsWith([ 'b', 'c' ])([ 'a', 'b', 'c' ])).eql(true)
+
+    expect(R.endsWith([ 'b' ])([ 'a', 'b', 'c' ])).eql(false)
+    expect(R.endsWith('c')([ 'a', 'b', 'c' ])).eql(false)
+  })
+})
