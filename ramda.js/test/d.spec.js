@@ -166,3 +166,41 @@ describe('dropLast', () => {
     expect(R.dropLast(5)('kanziw')).eql('k')
   })
 })
+
+describe('dropRepeats', () => {
+  /**
+   * Returns a new list without any consecutively repeating elements.
+   * R.equals is used to determine equality.
+   * Acts as a transducer if a transformer is given in list position.
+   *
+   * 연속으로 반복되는 같은 값이 나오면 해당 값을 제거한다.
+   * Unique 한 요소를 반환하진 않고 연속으로 반복되는 값만 제거한다.
+   * 값 비교는 R.equals 가 사용된다.
+   */
+  it('simple', () => {
+    expect(R.dropRepeats([ 1, 1, 1, 2, 3, 4, 4, 2, 2, 1 ])).eql([ 1, 2, 3, 4, 2, 1 ])
+  })
+})
+
+describe('dropRepeatsWith', () => {
+  /**
+   * Returns a new list without any consecutively repeating elements. Equality is determined by applying the supplied predicate to each pair of consecutive elements.
+   * The first element in a series of equal elements will be preserved.
+   * Acts as a transducer if a transformer is given in list position.
+   *
+   * (compFn, array) => array
+   * compFn 으로 비교하여 연속으로 반복되는 값이 나오면 해당 값을 제거한다.
+   */
+
+  const testArr = [ 1, -1, 1, 3, 4, -4, -4, -5, 5, 3, 3 ]
+  const resultArr = [ 1, 3, 4, -5, 3 ]
+  const compFn = R.curry((n1, n2) => Math.abs(n1) === Math.abs(n2))
+
+  it('simple', () => {
+    expect(R.dropRepeatsWith(compFn, testArr)).eql(resultArr)
+  })
+
+  it('curry', () => {
+    expect(R.dropRepeatsWith(compFn)(testArr)).eql(resultArr)
+  })
+})
