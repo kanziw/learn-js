@@ -106,3 +106,18 @@ describe('dissocPath', () => {
     expect(R.dissocPath([ 'a', 'b', 'd', 1, 'e' ], testObj)).eql(resultArr)
   })
 })
+
+describe('divide', () => {
+  it('simple', () => {
+    expect(R.divide(71, 100)).eql(0.71)
+    expect(R.divide(71, 0)).eql(Number.POSITIVE_INFINITY)
+  })
+
+  it('curry', () => {
+    const half = R.divide(R.__, 2)
+    expect(half(42)).eql(21)
+
+    const reciprocal = R.divide(1)
+    expect(reciprocal(4)).eql(0.25)
+  })
+})
