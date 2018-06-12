@@ -74,3 +74,71 @@ describe('endsWith', () => {
     expect(R.endsWith('c')([ 'a', 'b', 'c' ])).eql(false)
   })
 })
+
+describe('eqBy', () => {
+  /**
+   * Takes a function and two values in its domain and returns true if the values map to the same value in the codomain; false otherwise.
+   *
+   * (compFn, v1, v2) => boolean
+   * compFn 을 통해 v1 과 v2 를 비교한다.
+   */
+  it('simple', () => {
+    expect(R.eqBy(Math.abs, 5, -5)).to.be.true
+    expect(R.eqBy(Math.abs, 5, -3)).to.be.false
+  })
+
+  it('curry', () => {
+    expect(R.eqBy(Math.abs)(5)(-5)).to.be.true
+    expect(R.eqBy(Math.abs)(5)(-3)).to.be.false
+  })
+})
+
+describe('eqProps', () => {
+  /**
+   * Reports whether two objects have the same value, in R.equals terms, for the specified property.
+   * Useful as a curried predicate.
+   *
+   * (prop, obj1, obj2) => boolean
+   * obj1 과 obj2 의 prop 값을 비교한다.
+   */
+
+  const obj1 = { a: 1, b: 2, c: 3, d: 4 }
+  const obj2 = { a: 10, b: 20, c: 3, d: 40 }
+
+  it('simple', () => {
+    expect(R.eqProps('a', obj1, obj2)).to.be.false
+    expect(R.eqProps('c', obj1, obj2)).to.be.true
+  })
+
+  it('curry', () => {
+    expect(R.eqProps('a')(obj1)(obj2)).to.be.false
+    expect(R.eqProps('c')(obj1)(obj2)).to.be.true
+  })
+})
+
+describe('equals', () => {
+  /**
+   * Returns true if its arguments are equivalent, false otherwise. Handles cyclical data structures.
+   * Dispatches symmetrically to the equals methods of both arguments, if present.
+   *
+   * (v1, v2) => boolean
+   * (순환참조로 이루어진 것을 포함하여) v1, v2 의 값이 같은지 비교한다.
+   */
+  it('simple', () => {
+    expect(R.equals(1, 1)).to.be.true
+    expect(R.equals(1, '1')).to.be.false
+    expect(R.equals([ 1, 2, 3 ], [ 1, 2, 3 ])).to.be.true
+
+    const a = {}
+    a.v = a
+    const b = {}
+    b.v = b
+    expect(R.equals(a, b)).to.be.true
+  })
+
+  it('curry', () => {
+    expect(R.equals(1)(1)).to.be.true
+    expect(R.equals(1)('1')).to.be.false
+    expect(R.equals([ 1, 2, 3 ])([ 1, 2, 3 ])).to.be.true
+  })
+})
