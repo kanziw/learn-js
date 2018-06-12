@@ -8,3 +8,15 @@ describe('dec', () => {
     expect(R.dec(28)).eql(27)
   })
 })
+
+describe('defaultTo', () => {
+  it('simple', () => {
+    const defaultValue = 42
+    const defaultTo42 = R.defaultTo(defaultValue)
+
+    expect(defaultTo42(null)).eql(defaultValue)
+    expect(defaultTo42(undefined)).eql(defaultValue)
+    expect(defaultTo42(NaN)).eql(defaultValue)
+    expect(defaultTo42('Ramda')).eql('Ramda')
+  })
+})
