@@ -3,6 +3,8 @@ const Promise = require('bluebird')
 
 const app = express()
 
+app.set('trust proxy', true)
+
 app.get('/', (req, res) => {
   res.status(200).send('Hello, world!').end()
 })
@@ -10,6 +12,10 @@ app.get('/', (req, res) => {
 app.get('/async', async (req, res) => {
   await Promise.delay(3000)
   res.status(200).send('Hello, world! (After 3 seconds)').end()
+})
+
+app.get('/ip', (req, res) => {
+  res.status(200).send(`Is your IP [${req.ip}] ??`)
 })
 
 // Start the server
