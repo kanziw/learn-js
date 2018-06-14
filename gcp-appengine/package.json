@@ -2,8 +2,14 @@
   "name": "gcp-appengine",
   "version": "1.0.0",
   "description": "Quickstart for Node.js in the App Engine",
+  "engines": {
+    "node": "8.x.x"
+  },
   "main": "app.js",
   "repository": "https://github.com/kanziw/learn-js/tree/master/gcp-appengine",
+  "scripts": {
+    "start": "node app.js"
+  },
   "author": "kanziw",
   "license": "MIT",
   "private": false,
