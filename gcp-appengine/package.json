@@ -1,0 +1,14 @@
+{
+  "name": "gcp-appengine",
+  "version": "1.0.0",
+  "description": "Quickstart for Node.js in the App Engine",
+  "main": "app.js",
+  "repository": "https://github.com/kanziw/learn-js/tree/master/gcp-appengine",
+  "author": "kanziw",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "express": "^4.16.3"
+  }
+}
