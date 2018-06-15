@@ -1,1 +1,9 @@
 runtime: nodejs8
+
+handlers:
+- url: /asset
+  static_dir: asset
+
+- url: /.*
+  secure: always
+  script: auto
