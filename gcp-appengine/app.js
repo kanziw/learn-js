@@ -1,9 +1,12 @@
 const express = require('express')
 const Promise = require('bluebird')
+const morgan = require('morgan')
 
 const app = express()
 
 app.set('trust proxy', true)
+app.use(morgan('short'))
+app.use('/asset', express.static(__dirname + '/asset'))
 
 app.get('/', (req, res) => {
   res.status(200).send('Hello, world!').end()

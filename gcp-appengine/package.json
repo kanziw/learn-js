@@ -8,13 +8,17 @@
   "main": "app.js",
   "repository": "https://github.com/kanziw/learn-js/tree/master/gcp-appengine",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "deploy": "gcloud app deploy --project=kanziw-start-ap-nodejs",
+    "open": "gcloud app browse --project=kanziw-start-ap-nodejs",
+    "logs": "gcloud app logs tail -s default --project=kanziw-start-ap-nodejs"
   },
   "author": "kanziw",
   "license": "MIT",
   "private": false,
   "dependencies": {
     "bluebird": "^3.5.1",
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "morgan": "^1.9.0"
   }
 }
