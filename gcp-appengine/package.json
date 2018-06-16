@@ -11,7 +11,7 @@
     "start": "node app.js",
     "deploy": "gcloud app deploy --project=kanziw-start-ap-nodejs",
     "open": "gcloud app browse --project=kanziw-start-ap-nodejs",
-    "logs": "gcloud app logs tail -s default --project=kanziw-start-ap-nodejs"
+    "logs": "gcloud app logs tail -s default --project=kanziw-start-ap-nodejs --user-output-enabled"
   },
   "author": "kanziw",
   "license": "MIT",

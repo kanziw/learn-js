@@ -7,6 +7,14 @@ const app = express()
 app.set('trust proxy', true)
 app.use(morgan('short'))
 app.use('/asset', express.static(__dirname + '/asset'))
+app.use((req, res, next) => {
+  console.log(` LOG FROM: ${req.ip} / TO: ${req.path}`)
+  console.debug(` DEBUG FROM: ${req.ip} / TO: ${req.path}`)
+  console.info(` INFO FROM: ${req.ip} / TO: ${req.path}`)
+  console.warn(` WARN FROM: ${req.ip} / TO: ${req.path}`)
+  console.error(new Error('SAMPLE ERROR'))
+  next()
+})
 
 app.get('/', (req, res) => {
   res.status(200).send('Hello, world!').end()
