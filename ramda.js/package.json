@@ -5,6 +5,9 @@
   "author": "kanziw",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "test": "mocha -R spec ./test/*.spec.js"
+  },
   "dependencies": {
     "ramda": "^0.25.0",
     "ramda-fantasy": "^0.8.0"
