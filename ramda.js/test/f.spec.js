@@ -83,3 +83,18 @@ describe('flatten', () => {
       .eql([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ])
   })
 })
+
+describe('flip', () => {
+  /**
+   * 첫번째 / 두번째 인자를 바꿔 함수를 실행하게 하는 함수를 반환한다.
+   */
+
+  const getArgs = (...args) => args
+
+  it('simple', () => {
+    expect(R.flip(getArgs)).to.be.an('function')
+
+    expect(getArgs(1, 2, 3, 4, 5)).eql([ 1, 2, 3, 4, 5 ])
+    expect(R.flip(getArgs)(1, 2, 3, 4, 5)).eql([ 2, 1, 3, 4, 5 ])
+  })
+})
