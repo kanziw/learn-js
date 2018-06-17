@@ -98,3 +98,32 @@ describe('flip', () => {
     expect(R.flip(getArgs)(1, 2, 3, 4, 5)).eql([ 2, 1, 3, 4, 5 ])
   })
 })
+
+describe('forEach', () => {
+  /**
+   * forEach 를 돌고 난 후 원본 배열을 반환한다.
+   */
+  it('simple & curry', () => {
+    const arr = []
+    const collectXPlusFive = x => arr.push(x + 5)
+
+    expect(R.forEach(collectXPlusFive, [ 1, 2, 3 ])).eql([ 1, 2, 3 ])
+    expect(arr).eql([ 6, 7, 8 ])
+
+    expect(R.forEach(collectXPlusFive)([ 4, 5, 6 ])).eql([ 4, 5, 6 ])
+    expect(arr).eql([ 6, 7, 8, 9, 10, 11 ])
+  })
+})
+
+describe('forEachObjIndexed', () => {
+  it('simple & curry', () => {
+    const arr = []
+    const collectKeyConcatValue = (value, key) => arr.push(key + ':' + value)
+
+    expect(R.forEachObjIndexed(collectKeyConcatValue, { x: 1, y: 2 })).eql({ x: 1, y: 2 })
+    expect(arr).eql([ 'x:1', 'y:2' ])
+
+    expect(R.forEachObjIndexed(collectKeyConcatValue)({ w: 1, z: 2 })).eql({ w: 1, z: 2 })
+    expect(arr).eql([ 'x:1', 'y:2', 'w:1', 'z:2' ])
+  })
+})
