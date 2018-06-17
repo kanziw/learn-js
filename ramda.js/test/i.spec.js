@@ -70,3 +70,9 @@ describe('ifElse', () => {
     expect(incCount({ count: 1 })).eql({ count: 2 })
   })
 })
+
+describe('inc', () => {
+  it('simple', () => {
+    expect(R.inc(1)).eql(2)
+  })
+})
