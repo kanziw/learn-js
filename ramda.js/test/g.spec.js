@@ -68,3 +68,47 @@ describe('groupWith', () => {
     })
   })
 })
+
+describe('gt', () => {
+  /**
+   * (value, 기준) => boolean
+   * value 가 기준보다 큰가?
+   *
+   * 읽히기 좋게 하기 위해 R.flip 과 같이 쓰면 좋겠다.
+   */
+  it('simple & curry', () => {
+    expect(R.gt(2, 1)).to.be.true
+    expect(R.gt(2, 2)).to.be.false
+    expect(R.gt(2, 3)).to.be.false
+    expect(R.gt('a', 'z')).to.be.false
+    expect(R.gt('z', 'a')).to.be.true
+
+    expect(R.gt(2)(1)).to.be.true
+    expect(R.gt(2)(2)).to.be.false
+    expect(R.gt(2)(3)).to.be.false
+    expect(R.gt('a')('z')).to.be.false
+    expect(R.gt('z')('a')).to.be.true
+  })
+})
+
+describe('gte', () => {
+  /**
+   * (value, 기준) => boolean
+   * value 가 기준보다 크거나 같은가?
+   *
+   * 읽히기 좋게 하기 위해 R.flip 과 같이 쓰면 좋겠다.
+   */
+  it('simple & curry', () => {
+    expect(R.gte(2, 1)).to.be.true
+    expect(R.gte(2, 2)).to.be.true
+    expect(R.gte(2, 3)).to.be.false
+    expect(R.gte('a', 'z')).to.be.false
+    expect(R.gte('z', 'a')).to.be.true
+
+    expect(R.gte(2)(1)).to.be.true
+    expect(R.gte(2)(2)).to.be.true
+    expect(R.gte(2)(3)).to.be.false
+    expect(R.gte('a')('z')).to.be.false
+    expect(R.gte('z')('a')).to.be.true
+  })
+})
