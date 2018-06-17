@@ -96,3 +96,20 @@ describe('indexOf', () => {
     expect(R.indexOf(10)([ 1, 2, 3, 4 ])).eql(-1)
   })
 })
+
+describe('init', () => {
+  /**
+   * 가장 마지막 요소를 제외한 결과를 반환한다.
+   */
+  it('simple', () => {
+    expect(R.init([ 1, 2, 3 ])).eql([ 1, 2 ])
+    expect(R.init([ 1, 2 ])).eql([ 1 ])
+    expect(R.init([ 1 ])).eql([])
+    expect(R.init([])).eql([])
+
+    expect(R.init('abc')).eql('ab')
+    expect(R.init('ab')).eql('a')
+    expect(R.init('a')).eql('')
+    expect(R.init('')).eql('')
+  })
+})
