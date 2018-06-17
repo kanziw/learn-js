@@ -127,3 +127,9 @@ describe('forEachObjIndexed', () => {
     expect(arr).eql([ 'x:1', 'y:2', 'w:1', 'z:2' ])
   })
 })
+
+describe('fromPairs', () => {
+  it('simple', () => {
+    expect(R.fromPairs([ [ 'a', 1 ], [ 'b', [ 1 ] ], [ 'c', { d: 1 } ] ])).eql({ a: 1, b: [ 1 ], c: { d: 1 } })
+  })
+})
