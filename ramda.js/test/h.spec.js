@@ -62,3 +62,13 @@ describe('hasIn', () => {
     expect(R.hasIn('name')({})).to.be.false
   })
 })
+
+describe('head', () => {
+  it('simple', () => {
+    expect(R.head([ 'fi', 'fo', 'fum' ])).eql('fi')
+    expect(R.head([])).to.be.undefined
+
+    expect(R.head('abc')).eql('a')
+    expect(R.head('')).eql('')
+  })
+})
