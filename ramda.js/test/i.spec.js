@@ -39,3 +39,34 @@ describe('identity', () => {
     expect(R.identity(obj) === obj).to.be.true
   })
 })
+
+describe('ifElse', () => {
+  /**
+   * (pred, ifFunction, elseFunction) => //
+   */
+  const pred = R.has('count')
+  const ifFunction = R.over(R.lensProp('count'), R.inc)
+  const elseFunction = R.assoc('count', 1)
+
+  it('simple', () => {
+    // Can not use directly
+    expect(R.ifElse(pred, ifFunction, elseFunction, {})).not.eql({ count: 1 })
+    expect(R.ifElse(pred, ifFunction, elseFunction, {})).be.an('function')
+
+    const incCount = R.ifElse(pred, ifFunction, elseFunction)
+    expect(incCount({})).eql({ count: 1 })
+    expect(incCount({ count: 1 })).eql({ count: 2 })
+  })
+
+  it('curry', () => {
+    const curry1 = R.ifElse(pred)
+    expect(curry1).to.be.an('function')
+
+    const curry2 = curry1(ifFunction)
+    expect(curry2).to.be.an('function')
+
+    const incCount = curry2(elseFunction)
+    expect(incCount({})).eql({ count: 1 })
+    expect(incCount({ count: 1 })).eql({ count: 2 })
+  })
+})
