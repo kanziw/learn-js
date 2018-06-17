@@ -86,3 +86,13 @@ describe('indexBy', () => {
     expect(R.indexBy(R.prop('id'))(testArr)).eql(resultObj)
   })
 })
+
+describe('indexOf', () => {
+  it('simple & curry', () => {
+    expect(R.indexOf(3, [ 1, 2, 3, 4 ])).eql(2)
+    expect(R.indexOf(10, [ 1, 2, 3, 4 ])).eql(-1)
+
+    expect(R.indexOf(3)([ 1, 2, 3, 4 ])).eql(2)
+    expect(R.indexOf(10)([ 1, 2, 3, 4 ])).eql(-1)
+  })
+})
