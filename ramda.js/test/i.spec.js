@@ -76,3 +76,13 @@ describe('inc', () => {
     expect(R.inc(1)).eql(2)
   })
 })
+
+describe('indexBy', () => {
+  const testArr = [ { id: 'xyz', title: 'A' }, { id: 'abc', title: 'B' } ]
+  const resultObj = { abc: { id: 'abc', title: 'B' }, xyz: { id: 'xyz', title: 'A' } }
+
+  it('simple & curry', () => {
+    expect(R.indexBy(R.prop('id'), testArr)).eql(resultObj)
+    expect(R.indexBy(R.prop('id'))(testArr)).eql(resultObj)
+  })
+})
