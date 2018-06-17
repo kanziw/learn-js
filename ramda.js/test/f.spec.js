@@ -27,3 +27,52 @@ describe('filter', () => {
     expect(filterEven(testObj)).eql(evenObj)
   })
 })
+
+describe('find', () => {
+  /**
+   * predicate 를 true 로 반환하는 첫번째 인자 혹은 undefined(없는 경우) 를 반환한다.
+   * Object 는 지원하지 않는다.
+   */
+
+  it('simple & curry', () => {
+    const xs = [ { a: 1 }, { a: 2 }, { a: 3 } ]
+    expect(R.find(R.propEq('a', 2), xs)).eql({ a: 2 })
+    expect(R.find(R.propEq('a', 4), xs)).to.be.undefined
+
+    expect(R.find(R.propEq('a', 2))(xs)).eql({ a: 2 })
+    expect(R.find(R.propEq('a', 4))(xs)).to.be.undefined
+  })
+})
+
+describe('findLast', () => {
+  it('simple & curry', () => {
+    const xs = [ { a: 1, b: 0 }, { a: 1, b: 1 } ]
+    expect(R.findLast(R.propEq('a', 1), xs)).eql({ a: 1, b: 1 })
+    expect(R.findLast(R.propEq('a', 4), xs)).to.be.undefined
+
+    expect(R.findLast(R.propEq('a', 1))(xs)).eql({ a: 1, b: 1 })
+    expect(R.findLast(R.propEq('a', 4))(xs)).to.be.undefined
+  })
+})
+
+describe('findIndex', () => {
+  it('simple & curry', () => {
+    const xs = [ { a: 1 }, { a: 2 }, { a: 3 } ]
+    expect(R.findIndex(R.propEq('a', 2), xs)).eql(1)
+    expect(R.findIndex(R.propEq('a', 4), xs)).eql(-1)
+
+    expect(R.findIndex(R.propEq('a', 2))(xs)).eql(1)
+    expect(R.findIndex(R.propEq('a', 4))(xs)).eql(-1)
+  })
+})
+
+describe('findLastIndex', () => {
+  it('simple & curry', () => {
+    const xs = [ { a: 1, b: 0 }, { a: 1, b: 1 } ]
+    expect(R.findLastIndex(R.propEq('a', 1), xs)).eql(1)
+    expect(R.findLastIndex(R.propEq('a', 4), xs)).eql(-1)
+
+    expect(R.findLastIndex(R.propEq('a', 1))(xs)).eql(1)
+    expect(R.findLastIndex(R.propEq('a', 4))(xs)).eql(-1)
+  })
+})
