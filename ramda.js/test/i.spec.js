@@ -113,3 +113,35 @@ describe('init', () => {
     expect(R.init('')).eql('')
   })
 })
+
+describe('innerJoin', () => {
+  /**
+   * (pred, xs, ys) => xs'
+   *
+   * pred 는 binary function 이어야만 하며, (x, y) => boolean 의 형식을 만족한다.
+   * xs' 는 pred 를 true 로 만족시키는 요소들이 필터링 된 결과이다.
+   */
+  it('simple & curry', () => {
+    expect(R.innerJoin(
+      (record, id) => record.id === id,
+      [ { id: 824, name: 'Richie Furay' },
+        { id: 956, name: 'Dewey Martin' },
+        { id: 313, name: 'Bruce Palmer' },
+        { id: 456, name: 'Stephen Stills' },
+        { id: 177, name: 'Neil Young' } ],
+      [ 177, 456, 999 ]
+    )).eql([ { id: 456, name: 'Stephen Stills' }, { id: 177, name: 'Neil Young' } ])
+
+    expect(R.innerJoin(
+      (record, id) => record.id === id)
+      ([
+        { id: 824, name: 'Richie Furay' },
+        { id: 956, name: 'Dewey Martin' },
+        { id: 313, name: 'Bruce Palmer' },
+        { id: 456, name: 'Stephen Stills' },
+        { id: 177, name: 'Neil Young' }
+      ])
+      ([ 177, 456, 999 ])
+    ).eql([ { id: 456, name: 'Stephen Stills' }, { id: 177, name: 'Neil Young' } ])
+  })
+})
