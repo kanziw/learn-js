@@ -76,3 +76,10 @@ describe('findLastIndex', () => {
     expect(R.findLastIndex(R.propEq('a', 4))(xs)).eql(-1)
   })
 })
+
+describe('flatten', () => {
+  it('simple', () => {
+    expect(R.flatten([ 1, 2, [ 3, 4 ], 5, [ 6, [ 7, 8, [ 9, [ 10, 11 ], 12 ] ] ] ]))
+      .eql([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ])
+  })
+})
