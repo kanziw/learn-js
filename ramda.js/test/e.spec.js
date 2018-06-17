@@ -142,3 +142,45 @@ describe('equals', () => {
     expect(R.equals([ 1, 2, 3 ])([ 1, 2, 3 ])).to.be.true
   })
 })
+
+describe('evolve', () => {
+  /**
+   * Creates a new object by recursively evolving a shallow copy of object, according to the transformation functions.
+   * All non-primitive properties are copied by reference.
+   * A transformation function will not be invoked if its corresponding key does not exist in the evolved object.
+   *
+   * (transformFn, obj) => obj
+   *
+   * object 의 각 항목에 transformFn 을 매핑하여 해당 함수를 실행한다.
+   */
+
+  const testObj = {
+    firstName: '  Tomato ',
+    data: { elapsed: 100, remaining: 1400 },
+    id: 123,
+  }
+  const transformations = {
+    firstName: R.trim,
+    lastName: R.trim, // lastName: 평가할 항목이 없으면 pass
+    data: { elapsed: R.add(1), remaining: R.add(-1) },
+    // id: 평가할 함수가 없으면 pass
+  }
+  const resultObj = {
+    firstName: 'Tomato',
+    data: { elapsed: 101, remaining: 1399 },
+    id: 123,
+  }
+
+  it('simple & curry', () => {
+    expect(R.evolve(transformations, testObj)).eql(resultObj)
+    expect(R.evolve(transformations)(testObj)).eql(resultObj)
+  })
+
+  it('array does not supported.', () => {
+    const testObjWithArr = { arr: [ 1, 'david  ' ] }
+    const transformationObj = { arr: [ , R.trim ] }
+
+    expect(R.evolve(transformationObj)(testObjWithArr)).not.eql({ arr: [ 1, 'david' ] })
+    expect(R.evolve(transformationObj)(testObjWithArr)).eql({ arr: { '0': 1, '1': 'david' } })
+  })
+})
