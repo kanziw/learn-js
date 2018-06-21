@@ -232,3 +232,27 @@ describe('into', () => {
     expect(R.into([])(transducer)(numbers)).eql([ 2, 3 ])
   })
 })
+
+describe('invert', () => {
+  /**
+   * obj => obj
+   * key & value 를 invert 하되 결과의 value 는 array 이다.
+   */
+  it('simple', () => {
+    const testObj = { A: 'kanziw', B: 'david', C: 'kanziw', D: 'david2' }
+    const resultObj = { kanziw: [ 'A', 'C' ], david: [ 'B' ], david2: [ 'D' ] }
+    expect(R.invert(testObj)).eql(resultObj)
+  })
+})
+
+describe('invertObj', () => {
+  /**
+   * obj => obj
+   * key & value 를 invert 한다.
+   */
+  it('simple', () => {
+    const testObj = { A: 'kanziw', B: 'david', C: 'kanziw', D: 'david2' }
+    const resultObj = { kanziw: 'C', david: 'B', david2: 'D' }
+    expect(R.invertObj(testObj)).eql(resultObj)
+  })
+})
