@@ -216,3 +216,19 @@ describe('intersperse', () => {
     expect(R.intersperse('n')([])).eql([])
   })
 })
+
+describe('into', () => {
+  /**
+   * (arr1, fn, arr2) => arr
+   *
+   * fn(arr2) 의 결과를 arr1 에 push 한다. ?!
+   */
+  it('simple & curry', () => {
+    const numbers = [ 1, 2, 3, 4 ]
+    const transducer = R.compose(R.map(R.add(1)), R.take(2))
+    expect(R.into([], transducer, numbers)).eql([ 2, 3 ])
+    expect(R.into([ -2, -1 ], transducer, numbers)).eql([ -2, -1, 2, 3 ])
+
+    expect(R.into([])(transducer)(numbers)).eql([ 2, 3 ])
+  })
+})
