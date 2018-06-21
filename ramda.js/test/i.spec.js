@@ -308,3 +308,29 @@ describe('is', () => {
     expect(R.is(String, NaN)).to.be.false
   })
 })
+
+describe('isEmpty', () => {
+  it('simple', () => {
+    expect(R.isEmpty([])).to.be.true
+    expect(R.isEmpty('')).to.be.true
+    expect(R.isEmpty({})).to.be.true
+
+    expect(R.isEmpty(null)).to.be.false
+    expect(R.isEmpty(undefined)).to.be.false
+    expect(R.isEmpty([ 1, 2, 3 ])).to.be.false
+    expect(R.isEmpty({ length: 0 })).to.be.false
+    expect(R.isEmpty('abc')).to.be.false
+  })
+})
+
+describe('isNil', () => {
+  it('simple', () => {
+    expect(R.isNil(null)).to.be.true
+    expect(R.isNil(undefined)).to.be.true
+
+    expect(R.isNil(0)).to.be.false
+    expect(R.isNil([])).to.be.false
+    expect(R.isNil(NaN)).to.be.false
+    expect(R.isNil('')).to.be.false
+  })
+})
