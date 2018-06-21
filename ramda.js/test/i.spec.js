@@ -274,3 +274,37 @@ describe('invoker', () => {
     expect(sliceFrom3(5)('1234567890')).eql('45')
   })
 })
+
+describe('is', () => {
+  it('Object', () => {
+    expect(R.is(Object, {})).to.be.true
+    expect(R.is(Object, [])).to.be.true
+    expect(R.is(Object, new String(''))).to.be.true
+    expect(R.is(Object, new Number(0))).to.be.true
+    expect(R.is(Object, new Function())).to.be.true
+
+    expect(R.is(Object, 1)).to.be.false
+    expect(R.is(Object, NaN)).to.be.false
+    expect(R.is(Object, '')).to.be.false
+    expect(R.is(Object, 's')).to.be.false
+  })
+
+  it('Number', () => {
+    expect(R.is(Number, 1)).to.be.true
+    expect(R.is(Number, Infinity)).to.be.true
+    expect(R.is(Number, -Infinity)).to.be.true
+    expect(R.is(Number, NaN)).to.be.true
+    expect(R.is(Number, new Number())).to.be.true
+
+    expect(R.is(Number, {})).to.be.false
+    expect(R.is(Number, '')).to.be.false
+  })
+
+  it('String', () => {
+    expect(R.is(String, 's')).to.be.true
+    expect(R.is(String, new String(''))).to.be.true
+
+    expect(R.is(String, 0)).to.be.false
+    expect(R.is(String, NaN)).to.be.false
+  })
+})
