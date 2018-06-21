@@ -204,3 +204,15 @@ describe('intersection', () => {
     expect(R.intersection([ 'a', 'b' ])('ac')).eql([ 'a' ])
   })
 })
+
+describe('intersperse', () => {
+  it('simple & curry', () => {
+    expect(R.intersperse('n', [ 'ba', 'a', 'a' ])).eql([ 'ba', 'n', 'a', 'n', 'a' ])
+    expect(R.intersperse('', [ 'ba', 'a', 'a' ])).eql([ 'ba', '', 'a', '', 'a' ])
+    expect(R.intersperse('n', [])).eql([])
+
+    expect(R.intersperse('n')([ 'ba', 'a', 'a' ])).eql([ 'ba', 'n', 'a', 'n', 'a' ])
+    expect(R.intersperse('')([ 'ba', 'a', 'a' ])).eql([ 'ba', '', 'a', '', 'a' ])
+    expect(R.intersperse('n')([])).eql([])
+  })
+})
