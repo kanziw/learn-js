@@ -256,3 +256,21 @@ describe('invertObj', () => {
     expect(R.invertObj(testObj)).eql(resultObj)
   })
 })
+
+describe('invoker', () => {
+  /**
+   * (cnt, fnName) => (...args, SOURCE)
+   *
+   * SOURCE.fnName(...args) 를 수행한다.
+   * cnt 는 args 의 길이이다.
+   */
+  it('simple', () => {
+    const sliceFrom = R.invoker(1, 'slice')
+    expect(sliceFrom(6, '1234567890')).eql('7890')
+    expect(sliceFrom(6)('1234567890')).eql('7890')
+
+    const sliceFrom3 = R.invoker(2, 'slice')(3)
+    expect(sliceFrom3(5, '1234567890')).eql('45')
+    expect(sliceFrom3(5)('1234567890')).eql('45')
+  })
+})
