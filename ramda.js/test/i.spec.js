@@ -145,3 +145,45 @@ describe('innerJoin', () => {
     ).eql([ { id: 456, name: 'Stephen Stills' }, { id: 177, name: 'Neil Young' } ])
   })
 })
+
+describe('insert', () => {
+  /**
+   * (idx, value, arr) => arr
+   *
+   * arr 의 배열에 끼워넣을 수 없는 경우 맨 뒤에 push 한다.
+   */
+  it('simple & curry', () => {
+    expect(R.insert(-3, 'x', [ 1, 2, 3, 4 ])).eql([ 1, 2, 3, 4, 'x' ])
+    expect(R.insert(-1, 'x', [ 1, 2, 3, 4 ])).eql([ 1, 2, 3, 4, 'x' ])
+    expect(R.insert(0, 'x', [ 1, 2, 3, 4 ])).eql([ 'x', 1, 2, 3, 4 ])
+    expect(R.insert(2, 'x', [ 1, 2, 3, 4 ])).eql([ 1, 2, 'x', 3, 4 ])
+    expect(R.insert(5, 'x', [ 1, 2, 3, 4 ])).eql([ 1, 2, 3, 4, 'x' ])
+    expect(R.insert(9, 'x', [ 1, 2, 3, 4 ])).eql([ 1, 2, 3, 4, 'x' ])
+
+    expect(R.insert(-3)('x')([ 1, 2, 3, 4 ])).eql([ 1, 2, 3, 4, 'x' ])
+    expect(R.insert(-1)('x')([ 1, 2, 3, 4 ])).eql([ 1, 2, 3, 4, 'x' ])
+    expect(R.insert(0)('x')([ 1, 2, 3, 4 ])).eql([ 'x', 1, 2, 3, 4 ])
+    expect(R.insert(2)('x')([ 1, 2, 3, 4 ])).eql([ 1, 2, 'x', 3, 4 ])
+    expect(R.insert(5)('x')([ 1, 2, 3, 4 ])).eql([ 1, 2, 3, 4, 'x' ])
+    expect(R.insert(9)('x')([ 1, 2, 3, 4 ])).eql([ 1, 2, 3, 4, 'x' ])
+  })
+})
+
+describe('insertAll', () => {
+  /**
+   * (idx, arr, orgArr) => arr
+   *
+   * arr 의 배열에 끼워넣을 수 없는 경우 맨 뒤에 push 한다.
+   */
+  it('simple', () => {
+    expect(R.insertAll(-2, [ 'x', 'y', 'z' ], [ 1, 2, 3, 4 ])).eql([ 1, 2, 3, 4, 'x', 'y', 'z' ])
+    expect(R.insertAll(0, [ 'x', 'y', 'z' ], [ 1, 2, 3, 4 ])).eql([ 'x', 'y', 'z', 1, 2, 3, 4 ])
+    expect(R.insertAll(2, [ 'x', 'y', 'z' ], [ 1, 2, 3, 4 ])).eql([ 1, 2, 'x', 'y', 'z', 3, 4 ])
+    expect(R.insertAll(5, [ 'x', 'y', 'z' ], [ 1, 2, 3, 4 ])).eql([ 1, 2, 3, 4, 'x', 'y', 'z' ])
+
+    expect(R.insertAll(-2)([ 'x', 'y', 'z' ])([ 1, 2, 3, 4 ])).eql([ 1, 2, 3, 4, 'x', 'y', 'z' ])
+    expect(R.insertAll(0)([ 'x', 'y', 'z' ])([ 1, 2, 3, 4 ])).eql([ 'x', 'y', 'z', 1, 2, 3, 4 ])
+    expect(R.insertAll(2)([ 'x', 'y', 'z' ])([ 1, 2, 3, 4 ])).eql([ 1, 2, 'x', 'y', 'z', 3, 4 ])
+    expect(R.insertAll(5)([ 'x', 'y', 'z' ])([ 1, 2, 3, 4 ])).eql([ 1, 2, 3, 4, 'x', 'y', 'z' ])
+  })
+})
