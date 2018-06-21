@@ -187,3 +187,20 @@ describe('insertAll', () => {
     expect(R.insertAll(5)([ 'x', 'y', 'z' ])([ 1, 2, 3, 4 ])).eql([ 1, 2, 3, 4, 'x', 'y', 'z' ])
   })
 })
+
+describe('intersection', () => {
+  /**
+   * 교집합을 구한다.
+   *
+   * arr & string 의 교집합도 구할 수 있다.
+   */
+  it('simple & curry', () => {
+    expect(R.intersection([ 1, 2, 3, 4 ], [ 7, 6, 5, 4, 3 ])).eql([ 3, 4 ])
+    expect(R.intersection([ 'a', 'b', 3, 4 ], [ 7, 'c', 'a', 4, 3 ])).eql([ 'a', 3, 4 ])
+    expect(R.intersection([ 'a', 'b' ], 'ac')).eql([ 'a' ])
+
+    expect(R.intersection([ 1, 2, 3, 4 ])([ 7, 6, 5, 4, 3 ])).eql([ 3, 4 ])
+    expect(R.intersection([ 'a', 'b', 3, 4 ])([ 7, 'c', 'a', 4, 3 ])).eql([ 'a', 3, 4 ])
+    expect(R.intersection([ 'a', 'b' ])('ac')).eql([ 'a' ])
+  })
+})
