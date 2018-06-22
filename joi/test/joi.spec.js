@@ -13,14 +13,13 @@ const catchAsyncError = async promise => {
 }
 
 describe('validate', () => {
-  let [ retErr, retValue ] = []
-
-  beforeEach(() => {
-    retErr = undefined
-    retValue = undefined
-  })
-
   describe('validate style', () => {
+    let [ retErr, retValue ] = []
+    beforeEach(() => {
+      retErr = undefined
+      retValue = undefined
+    })
+
     const schema = {
       num: Joi.number(),
       str: Joi.string(),
@@ -62,14 +61,15 @@ describe('validate', () => {
       num: Joi.number(),
       str: Joi.string(),
     }
+    const validate = obj => Joi.validate(obj, schema)
 
     it('simple', async () => {
       const testSet = [ {}, { num: 1 }, { num: 1, str: 'a' } ]
-      await Promise.each(testSet, obj => Joi.validate(obj, schema).then(v => expect(v).eql(obj)))
+      await Promise.each(testSet, obj => validate(obj).then(v => expect(v).eql(obj)))
     })
 
     it('error', async () => {
-      const err = await catchAsyncError(Joi.validate({ num: 'a' }, schema))
+      const err = await catchAsyncError(validate({ num: 'a' }))
       expect(R.keys(err)).eql([ 'isJoi', 'name', 'details', '_object', 'annotate' ])
 
       expect(err.isJoi).to.be.true
@@ -83,6 +83,29 @@ describe('validate', () => {
         path: [ 'num' ],
         type: 'number.base',
         context: { key: 'num', label: 'num' }
+      })
+    })
+  })
+
+  describe('required', () => {
+    const schema = {
+      num: Joi.number(),
+      str: Joi.string().required(),
+    }
+    const validate = obj => Joi.validate(obj, schema)
+
+    it('simple', async () => {
+      const obj = { num: 1, str: 'a' }
+      await validate(obj).then(v => expect(v).eql(obj))
+    })
+
+    it('error', async () => {
+      const { details: [ detail ] } = await catchAsyncError(validate({ num: 1 }))
+      expect(detail).eql({
+        message: '"str" is required',
+        path: [ 'str' ],
+        type: 'any.required',
+        context: { key: 'str', label: 'str' }
       })
     })
   })
