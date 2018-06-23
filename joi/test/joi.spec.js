@@ -122,4 +122,10 @@ describe('express', () => {
   it('params', async () => {
     await chai.request(app).get('/user/kanziw').then(ok)
   })
+
+  it('body', async () => {
+    await chai.request(app).post('/user')
+      .send({ username: 'kanziw', email: 'kanziwoong@gmail.com', pw: '123456' })
+      .then(ok)
+  })
 })
