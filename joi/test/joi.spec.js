@@ -118,6 +118,7 @@ describe('validate', () => {
 
 describe('express', () => {
   const ok = r => expect(r.body.ok).eql(1)
+  const catchError = r => r.body.error
 
   it('params', async () => {
     await chai.request(app).get('/user/kanziw').then(ok)
@@ -127,5 +128,12 @@ describe('express', () => {
     await chai.request(app).post('/user')
       .send({ username: 'kanziw', email: 'kanziwoong@gmail.com', pw: '123456' })
       .then(ok)
+  })
+
+  it('invalid username', async () => {
+    await chai.request(app).post('/user')
+      .send({ username: '_kanziw', email: 'kanziwoong@gmail.com', pw: '123456' })
+      .then(catchError)
+      .then(error => expect(error).eql({ code: 1000, message: 'Username is not valid.' }))
   })
 })

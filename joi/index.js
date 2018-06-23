@@ -6,6 +6,8 @@ const R = require('ramda')
 const app = express()
 app.use(bodyParser.json())
 
+app.set('DB', new Map())
+
 const s = (schema, { parseOrder = [ 'query', 'body', 'params' ], property = 'input' } = {}) => {
   const keys = R.keys(schema)
   return (req, res, next) => R.pipe(
@@ -14,16 +16,18 @@ const s = (schema, { parseOrder = [ 'query', 'body', 'params' ], property = 'inp
     R.map(obj => R.pick(keys, obj)),
     R.mergeAll,
     input => Joi.validate(input, schema, (err, value) => {
-      console.log('__ERR', err)
-      console.log('__VAL', value)
+      if (err) { throw err }
       return value
     }),
     input => req[ property ] = input,
     () => next()
   )(req)
 }
-
-app.set('DB', new Map())
+const makeError = (code, message) => {
+  const err = new Error(message)
+  err.code = code
+  return err
+}
 
 // sanitizer
 const schema = {
@@ -37,7 +41,8 @@ app.get('/user/:username', s(schema), (req, res) => {
 })
 
 const schemaSignup = {
-  username: Joi.string().required().trim().regex(/^[a-zA-Z]/).alphanum().min(2).max(20),
+  username: Joi.string().required().trim().regex(/^[a-zA-Z]/).alphanum().min(2).max(20)
+    .error(makeError(1000, 'Username is not valid.')),
   email: Joi.string().required().email(),
   pw: Joi.string().required().min(6).max(20),
 }
@@ -56,8 +61,7 @@ app.post('/user', s(schemaSignup), (req, res) => {
 })
 
 app.use((err, req, res, next) => {
-  console.log('', err)
-  res.status(400).json({ err: { message: err.message } })
+  res.status(400).json({ error: { code: err.code, message: err.message } })
 })
 
 module.exports = app
