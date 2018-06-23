@@ -1,7 +1,12 @@
 const Joi = require('joi')
 const R = require('ramda')
 const Promise = require('bluebird')
-const expect = require('chai').expect
+const chai = require('chai')
+const chaiHttp = require('chai-http')
+const app = require('../index')
+
+chai.use(chaiHttp)
+const expect = chai.expect
 
 const catchAsyncError = async promise => {
   try {
@@ -108,5 +113,13 @@ describe('validate', () => {
         context: { key: 'str', label: 'str' }
       })
     })
+  })
+})
+
+describe('express', () => {
+  const ok = r => expect(r.body.ok).eql(1)
+
+  it('params', async () => {
+    await chai.request(app).get('/user/kanziw').then(ok)
   })
 })
