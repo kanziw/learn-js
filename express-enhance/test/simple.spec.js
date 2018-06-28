@@ -5,6 +5,12 @@ const app = require('../index')
 chai.use(chaiHttp)
 const expect = chai.expect
 
+it('/', async () => {
+  const { body: { path }, error } = await chai.request(app).get('/')
+  expect(path).eql('/')
+  expect(error).to.be.false
+})
+
 it('/api', async () => {
   const { body: { path }, error } = await chai.request(app).get('/api')
   expect(path).eql('/api')
