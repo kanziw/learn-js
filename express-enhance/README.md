@@ -70,8 +70,19 @@ app.get('/api/sub', (req, res) => res.json({ path: '/api/sub' }))
 
 ## But
 
-* 어떤 파일이 require 되어 적용될 지 모른다.
+* 어떤 파일이 먼저 require 되어 적용될 지 모른다.
 * 즉, pipeline 처럼 api endpoint 를 관리할 수 있는 express 의 기능을 express 답게 활용할 수 없다는 것.
   * main index.js 에서 공통으로 통과해야 하는 middleware 를 앞단에서 정의하면 됨
   * express 답지 못할 뿐..
+* 상위 라우팅 주소가 바뀌면 그 아래에 있는 하위 라우팅 파일의 라우팅 주소를 모두 고쳐야 한다.
+* 하위에서 여러번 require 하면 require 할 때 마다 해당 파일이 실행되는 것은 아닐까?
+
+## But of But
+
+* 상위 path 보다 먼저 하위 path 가 require 된다?
+  * 바로 상위 디렉터리에 있는 모듈을 require 한다는 원칙만 지킨다면 그럴 일은 없을 것.
+  * 근데 그 원칙을 지키는 것이 문제일 뿐.
+* 상위에서 객체를 전달하기 때문에 shared 객체를 활용하기에 좋아보임
+* 하위에서 상위 모듈을 여러번 require 해도 상위 모듈의 로직은 한번만 수행됨
+  * app.locals.cnt 값 증가하는 로직을 넣었지만 한번만 해당 기능이 수행됨
 

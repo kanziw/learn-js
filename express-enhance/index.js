@@ -2,6 +2,7 @@ const express = require('express')
 
 const app = express()
 
+app.locals.cnt = 0
 app.get('/', (req, res) => res.json({ path: '/' }))
 
 module.exports = app
