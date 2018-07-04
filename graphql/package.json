@@ -4,7 +4,21 @@
   "main": "index.js",
   "author": "kanziw",
   "license": "MIT",
+  "scripts": {
+    "start": "nodemon --exec babel-node index.js"
+  },
+  "babel": {
+    "presets": [
+      "env",
+      "stage-3"
+    ]
+  },
   "dependencies": {
     "graphql-yoga": "^1.14.10"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-3": "^6.24.1"
   }
 }
