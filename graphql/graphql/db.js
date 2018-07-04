@@ -24,3 +24,9 @@ let movies = [
 export const getMovies = () => movies
 
 export const getById = id => movies.find(movie => movie.id === id)
+
+export const addMovie = (name, score) => {
+  const newMovie = { id: movies.length, name, score }
+  movies.push(newMovie)
+  return newMovie
+}
