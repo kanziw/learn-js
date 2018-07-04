@@ -1,22 +1,26 @@
-export const people = [
+let movies = [
   {
-    id: '0',
-    name: 'kanziw',
-    age: 25,
-    gender: 'male',
+    id: 0,
+    name: 'Star Wars - The new one',
+    score: 1,
   },
   {
-    id: '1',
-    name: 'reese',
-    age: 23,
-    gender: 'female',
+    id: 1,
+    name: 'Avengers - The new one',
+    score: 8,
   },
   {
-    id: '2',
-    name: 'david',
-    age: 30,
-    gender: 'male',
-  }
+    id: 2,
+    name: 'The Godfather 1',
+    score: 99,
+  },
+  {
+    id: 3,
+    name: 'Logan',
+    score: 2,
+  },
 ]
 
-export const getById = id => people.find(person => person.id == id)
+export const getMovies = () => movies
+
+export const getById = id => movies.find(movie => movie.id === id)
