@@ -23,3 +23,19 @@ describe('lastIndexOf', () => {
     expect(R.lastIndexOf(9)([ 0, 1, 2, 3, 4, 5, 6 ])).eql(-1)
   })
 })
+
+describe('length', () => {
+  it('simple', () => {
+    expect(R.length([])).eql(0)
+    expect(R.length([ 1, 2, 3 ])).eql(3)
+
+    expect(R.length('')).eql(0)
+    expect(R.length('123')).eql(3)
+
+    expect(R.length(function (a, b) { return a + b })).eql(2)
+
+    expect(R.length(undefined)).to.be.NaN
+    expect(R.length(null)).to.be.NaN
+    expect(R.length({})).to.be.NaN
+  })
+})
