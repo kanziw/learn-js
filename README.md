@@ -16,3 +16,11 @@
 
 > Idea of [link](https://medium.com/steady-study/번역-아주-거대한-자바스크립트-어플리케이션을-구축하기-3aa37fc45122) using [Express](https://expressjs.com/)
 
+###[GraphQL Server](https://github.com/kanziw/learn-js/tree/master/graphql)
+
+> Practice Graphql server using [graphql-yoga](https://github.com/prismagraphql/graphql-yoga)
+
+###[GraphQL Client](https://github.com/kanziw/learn-js/tree/master/movieql-client)
+
+> Practice Graphql on React using [react-apollo](https://github.com/apollographql/react-apollo)
+
