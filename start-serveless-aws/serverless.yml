@@ -17,6 +17,12 @@ functions:
       - http:
           path: todos
           method: post
+  getTodo:
+    handler: get.run
+    events:
+      - http:
+          path: todos/{id}
+          method: get
 
 resources:
   Resources:
