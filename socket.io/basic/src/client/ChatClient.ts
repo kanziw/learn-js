@@ -6,13 +6,14 @@ import { NOT_AUTHORIZED_USER_ERROR_MESSAGE } from '../const'
 export default class ChatClient {
   public id: string
   public onReady: Promise<void>
+  public messages: any[]
   private readonly token: string | null
   private readonly socket: SocketIOClient.Socket
   private logger: debug.IDebugger
 
-  constructor({ token = null }: ChatClientOptions = {}) {
+  constructor({ token = null, port = PORT }: ChatClientOptions = {}) {
     this.token = token
-    this.socket = SocketIOClient(`http://${HOST}:${PORT}`, {
+    this.socket = SocketIOClient(`http://${HOST}:${port}`, {
       transportOptions: {
         polling: {
           extraHeaders: {
@@ -23,6 +24,7 @@ export default class ChatClient {
     })
 
     this.addHandlers()
+    this.messages = []
   }
 
   public close(): void {
@@ -32,9 +34,13 @@ export default class ChatClient {
   private addHandlers(): void {
     this.addAuthHandler()
     this.socket.on('error', err => {
-      if (err !== NOT_AUTHORIZED_USER_ERROR_MESSAGE) {
+      if (err !== NOT_AUTHORIZED_USER_ERROR_MESSAGE && (err && err.message !== 'xhr poll error')) {
         this.logger(err)
       }
+    })
+
+    this.socket.on('msg', data => {
+      this.messages.push(data)
     })
   }
 
@@ -57,4 +63,5 @@ export default class ChatClient {
 
 export interface ChatClientOptions {
   token?: string | null
+  port?: number
 }
