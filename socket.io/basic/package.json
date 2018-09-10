@@ -1,0 +1,38 @@
+{
+  "name": "basic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "db": "docker-compose -f db.yml up",
+    "dev": "cd src && nodemon --exec ts-node index.ts",
+    "prebuild": "rm -rf dist",
+    "build": "tsc",
+    "prestart": "npm run build",
+    "start": "node dist/index.js",
+    "test": "NODE_ENV=test mocha -r ts-node/register --timeout=5000 test/*.spec.ts"
+  },
+  "keywords": [],
+  "author": "kanziw <kanziwoong@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "redis": "^2.8.0",
+    "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.4",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.9.4",
+    "@types/redis": "^2.8.6",
+    "@types/socket.io": "^1.4.38",
+    "@types/socket.io-client": "^1.4.32",
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.4",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.15.0",
+    "typescript": "^3.0.3"
+  }
+}
