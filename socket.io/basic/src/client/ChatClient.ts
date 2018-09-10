@@ -3,26 +3,49 @@ import { HOST, PORT } from '../config'
 
 export default class ChatClient {
   public id: string
-  public onReady: Promise<string>
+  public onReady: Promise<void>
+  private readonly token: string | null
   private readonly socket: SocketIOClient.Socket
 
-  constructor() {
-    this.socket = SocketIOClient(`http://${HOST}:${PORT}`)
+  constructor({ token = null }: ChatClientOptions = {}) {
+    this.token = token
+    this.socket = SocketIOClient(`http://${HOST}:${PORT}`, {
+      transportOptions: {
+        polling: {
+          extraHeaders: {
+            'Authorization': this.token,
+          },
+        },
+      },
+    })
+
     this.addHandlers()
   }
 
-  public close() {
+  public close(): void {
     this.socket.close()
   }
 
-  private addHandlers() {
-    this.onReady = new Promise(resolve => {
+  private addHandlers(): void {
+    this.addAuthHandler()
+  }
+
+  private addAuthHandler(): void {
+    this.onReady = new Promise((resolve, reject) => {
       this.socket.on('connected', socketId => {
         this.id = socketId
         resolve()
       })
-    })
 
-    this.socket.emit('private message', { a: 'hello?' })
+      this.socket.on('error', err => {
+        if (err === 'Not authorized user!') {
+          reject(new Error(err))
+        }
+      })
+    })
   }
+}
+
+export interface ChatClientOptions {
+  token?: string | null
 }
