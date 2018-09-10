@@ -1,7 +1,8 @@
 import { expect } from 'chai'
 import SocketIO, { EngineSocket } from 'socket.io'
-import { start } from '../src'
+import { start } from '../src/server'
 import ChatClient, { ChatClientOptions } from '../src/client/ChatClient'
+import { NOT_AUTHORIZED_USER_ERROR_MESSAGE } from '../src/const'
 
 describe('Chat', () => {
   const closers: (() => void)[] = []
@@ -49,7 +50,7 @@ describe('Chat', () => {
       if (socket.request.headers.authorization === validToken) {
         next()
       } else {
-        next(new Error('Not authorized user!'))
+        next(new Error(NOT_AUTHORIZED_USER_ERROR_MESSAGE))
       }
     })
 
@@ -58,7 +59,7 @@ describe('Chat', () => {
       console.log('TEST FAILED!')
       expect(true).be.eql(false)
     } catch (ex) {
-      expect(ex.message).to.eql('Not authorized user!')
+      expect(ex.message).to.eql(NOT_AUTHORIZED_USER_ERROR_MESSAGE)
     }
 
     const onConnected = addSocketIdGetter(io)
