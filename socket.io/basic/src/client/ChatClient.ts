@@ -2,6 +2,7 @@ import debug from 'debug'
 import SocketIOClient from 'socket.io-client'
 import { HOST, PORT } from '../config'
 import { NOT_AUTHORIZED_USER_ERROR_MESSAGE } from '../const'
+import { Commands, SocketConnectedResponse } from '../interface'
 
 export default class ChatClient {
   public id: string
@@ -39,6 +40,7 @@ export default class ChatClient {
       }
     })
 
+    // for test case
     this.socket.on('msg', data => {
       this.messages.push(data)
     })
@@ -46,9 +48,9 @@ export default class ChatClient {
 
   private addAuthHandler(): void {
     this.onReady = new Promise((resolve, reject) => {
-      this.socket.on('connected', socketId => {
-        this.id = socketId
-        this.logger = debug(`socket:client:${socketId}`)
+      this.socket.on(Commands.Connected, ({ id }: SocketConnectedResponse) => {
+        this.id = id
+        this.logger = debug(`socket:client:${id}`)
         resolve()
       })
 

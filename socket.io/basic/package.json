@@ -18,21 +18,25 @@
   "dependencies": {
     "bluebird": "^3.5.2",
     "debug": "^3.1.0",
+    "jsonwebtoken": "^8.3.0",
     "redis": "^2.8.0",
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1",
-    "socket.io-redis": "^5.2.0"
+    "socket.io-redis": "^5.2.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.24",
     "@types/chai": "^4.1.4",
     "@types/debug": "0.0.30",
+    "@types/jsonwebtoken": "^7.2.8",
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.9.4",
     "@types/redis": "^2.8.6",
     "@types/socket.io": "^1.4.38",
     "@types/socket.io-client": "^1.4.32",
     "@types/socket.io-redis": "^1.0.25",
+    "@types/uuid": "^3.4.4",
     "chai": "^4.1.2",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.4",

@@ -1,13 +1,14 @@
 import { expect } from 'chai'
-import SocketIO, { EngineSocket } from 'socket.io'
-import { start } from '../src/server'
-import ChatClient, { ChatClientOptions } from '../src/client/ChatClient'
-import { NOT_AUTHORIZED_USER_ERROR_MESSAGE } from '../src/const'
+import SocketIO, { Socket } from 'socket.io'
+import ChatClient, { ChatClientOptions } from '../src/client'
 import { PORT } from '../src/config'
+import { NOT_AUTHORIZED_USER_ERROR_MESSAGE } from '../src/const'
+import { start } from '../src/server'
 import { delay } from '../src/utils'
+import { createFakeToken } from './helpers'
 
 describe('Chat', () => {
-  const closers: (() => void)[] = []
+  const closers: Array<() => void> = []
   const chatClients: ChatClient[] = []
 
   function startSocketServer(port?: number): SocketIO.Server {
@@ -16,7 +17,7 @@ describe('Chat', () => {
     return io
   }
 
-  function createChatClient({ token = null, port }: ChatClientOptions = {}): ChatClient {
+  function createChatClient({ token = createFakeToken(), port }: ChatClientOptions = {}): ChatClient {
     const client = new ChatClient({ token, port })
     chatClients.push(client)
     return client
@@ -24,7 +25,7 @@ describe('Chat', () => {
 
   function addSocketIdGetter(io): Promise<string> {
     return new Promise(resolve => {
-      io.on('connect', (socket: EngineSocket) => {
+      io.on('connect', (socket: Socket) => {
         resolve(socket.id)
       })
     })
@@ -46,18 +47,9 @@ describe('Chat', () => {
 
   it('Authorization', async () => {
     const io = startSocketServer()
-    const validToken = 'Bearer JWT_TOKEN_HERE!'
-
-    io.use((socket, next) => {
-      if (socket.request.headers.authorization === validToken) {
-        next()
-      } else {
-        next(new Error(NOT_AUTHORIZED_USER_ERROR_MESSAGE))
-      }
-    })
 
     try {
-      await createChatClient().onReady
+      await createChatClient({ token: null }).onReady
       console.log('TEST FAILED!')
       expect(true).be.eql(false)
     } catch (ex) {
@@ -65,7 +57,7 @@ describe('Chat', () => {
     }
 
     const onConnected = addSocketIdGetter(io)
-    const validTokenClient = createChatClient({ token: validToken })
+    const validTokenClient = createChatClient()
     const [ socketId ] = await Promise.all([ onConnected, validTokenClient.onReady ])
     expect(socketId).to.eql(validTokenClient.id)
   })
