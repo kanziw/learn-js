@@ -1,11 +1,12 @@
 import { expect } from 'chai'
 import SocketIO, { Socket } from 'socket.io'
+import uuid from 'uuid/v4'
 import ChatClient, { ChatClientOptions } from '../src/client'
 import { PORT } from '../src/config'
 import { NOT_AUTHORIZED_USER_ERROR_MESSAGE } from '../src/const'
 import { start } from '../src/server'
-import { delay } from '../src/utils'
-import { createFakeToken } from './helpers'
+import { createJWT, delay } from '../src/utils'
+import { createFakeToken, makeSocketIdToUid } from './helpers'
 
 describe('Chat', () => {
   const closers: Array<() => void> = []
@@ -91,6 +92,62 @@ describe('Chat', () => {
         expect(u.messages[ 1 ]).to.eql('ALL1')
         expect(u.messages[ 2 ]).to.eql('ALL2')
       })
+    })
+  })
+
+  describe('socket id as uid', () => {
+    it('single server /w duplicated uid -> override socket', async () => {
+      const io = startSocketServer()
+      makeSocketIdToUid(io)
+
+      const uid = uuid()
+      const token = createJWT(uid)
+
+      const client1 = createChatClient({ token })
+      await client1.onReady
+      expect(client1.id).to.eql(uid)
+      expect(client1.messages.length).to.eql(0)
+      io.emit('msg', 'M1')
+      await delay(200)
+      expect(client1.messages[ 0 ]).to.eql('M1')
+
+      const client2 = createChatClient({ token })
+      await client2.onReady
+      expect(client2.id).to.eql(uid)
+      io.emit('msg', 'M2')
+      await delay(200)
+      expect(client1.messages[ 1 ]).to.eql(undefined)
+      expect(client2.messages[ 0 ]).to.eql('M2')
+    })
+
+    // can not use uid to socket id. T^T
+    it('different server /w duplicated uid -> adding socket', async () => {
+      const PORTS = [ PORT, PORT + 1 ]
+      const [ io1, io2 ] = PORTS.map(port => startSocketServer(port))
+      makeSocketIdToUid(io1)
+      makeSocketIdToUid(io2)
+      const uid = uuid()
+      const token = createJWT(uid)
+
+      const client1 = createChatClient({ token, port: PORTS[ 0 ] })
+      await client1.onReady
+      io1.emit('msg', 'io1M1')
+      await delay(200)
+      io2.emit('msg', 'io2M1')
+      await delay(200)
+      expect(client1.messages[ 0 ]).to.eql('io1M1')
+      expect(client1.messages[ 1 ]).to.eql('io2M1')
+
+      const client2 = createChatClient({ token, port: PORTS[ 1 ] })
+      await client2.onReady
+      io1.emit('msg', 'io1M2')
+      await delay(200)
+      io2.emit('msg', 'io2M2')
+      await delay(200)
+      expect(client1.messages[ 2 ]).to.eql('io1M2')
+      expect(client1.messages[ 3 ]).to.eql('io2M2')
+      expect(client2.messages[ 0 ]).to.eql('io1M2')
+      expect(client2.messages[ 1 ]).to.eql('io2M2')
     })
   })
 })
