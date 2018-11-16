@@ -4,6 +4,10 @@
     "tslint-react",
     "tslint-config-prettier"
   ],
+  "rules": {
+    "no-console": false,
+    "max-classes-per-file": false
+  },
   "linterOptions": {
     "exclude": [
       "config/**/*.js",
