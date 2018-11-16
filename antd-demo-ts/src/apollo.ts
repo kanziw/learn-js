@@ -1,4 +1,14 @@
-import ApolloClient, { InMemoryCache } from 'apollo-boost'
+import ApolloClient, { InMemoryCache, Operation } from 'apollo-boost'
+
+const TOKEN_KEY = 'githubToken'
+const getToken = () => {
+  const token = localStorage.getItem(TOKEN_KEY)
+  if (token) {
+    return token
+  } else {
+    return ''
+  }
+}
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -6,12 +16,13 @@ const client = new ApolloClient({
     defaults: {
       auth: {
         __typename: 'Auth',
-        isLoggedIn: false,
+        isLoggedIn: Boolean(getToken()),
       },
     },
     resolvers: {
       Mutation: {
-        logUserIn: (_: any, __: any, { cache }: ICache) => {
+        logUserIn: (_: any, { token }: { token: string }, { cache }: IContext) => {
+          localStorage.setItem(TOKEN_KEY, token)
           cache.writeData({
             data: {
               auth: {
@@ -22,7 +33,8 @@ const client = new ApolloClient({
           })
           return null
         },
-        logUserOut: (_: any, __: any, { cache }: ICache) => {
+        logUserOut: (_: any, __: any, { cache }: IContext) => {
+          localStorage.removeItem(TOKEN_KEY)
           cache.writeData({
             data: {
               auth: {
@@ -36,11 +48,18 @@ const client = new ApolloClient({
       },
     },
   },
-  uri: 'http://localhost:4000/graphql',
+  request: async (operation: Operation) => {
+    operation.setContext({
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    })
+  },
+  uri: 'https://api.github.com/graphql',
 })
 
 export default client
 
-interface ICache {
+interface IContext {
   cache: InMemoryCache
 }

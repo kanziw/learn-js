@@ -1,14 +1,20 @@
 import { Button, Form, Icon, Input } from 'antd'
 import React, { ChangeEvent, FormEvent, useState } from 'react'
+import { MutationFn } from 'react-apollo'
 
 const StyleInputAlpha = { color: 'rgba(0,0,0,.25)' }
 
-const LoginPresenter: React.FunctionComponent = () => {
+interface IProps {
+  logUserIn: MutationFn
+}
+
+const LoginPresenter: React.FunctionComponent<IProps> = ({ logUserIn }) => {
   const [ token, setToken ] = useState('')
   const onTokenInputChange = (e: ChangeEvent<HTMLInputElement>) => setToken(e.target.value)
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
+    return logUserIn({ variables: { token } })
   }
 
   return (
