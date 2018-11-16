@@ -4,7 +4,10 @@
   "private": true,
   "dependencies": {
     "antd": "^3.10.3",
+    "apollo-boost": "^0.1.20",
+    "graphql": "^14.0.2",
     "react": "^16.7.0-alpha.2",
+    "react-apollo": "^2.3.1",
     "react-dom": "^16.7.0-alpha.2",
     "react-scripts-ts": "3.1.0",
     "styled-components": "^4.0.3",
@@ -13,14 +16,22 @@
   "scripts": {
     "start": "react-app-rewired start --scripts-version react-scripts-ts",
     "build": "react-app-rewired build --scripts-version react-scripts-ts",
-    "test": "react-app-rewired test --env=jsdom --scripts-version react-scripts-ts"
+    "test": "react-app-rewired test --env=jsdom --scripts-version react-scripts-ts",
+    "download:json": "wget https://raw.githubusercontent.com/octokit/graphql-schema/master/schema.json",
+    "download:graphql": "cd src/types && wget https://raw.githubusercontent.com/octokit/graphql-schema/master/schema.graphql",
+    "predownload": "rm -f schema.json types/schema.graphql",
+    "download": "npm run download:json; npm run download:graphql",
+    "precodegen": "npm run download",
+    "codegen": "apollo codegen:generate src/types/api.d.ts --queries='src/**/!(*.local).ts' --addTypename --schema schema.json --target typescript --outputFlat"
   },
   "devDependencies": {
+    "@types/graphql": "^14.0.3",
     "@types/jest": "^23.3.9",
     "@types/node": "^10.12.2",
     "@types/react": "^16.7.0",
     "@types/react-dom": "^16.0.9",
     "@types/styled-components": "^4.0.3",
+    "apollo": "1.9.2",
     "react-app-rewire-less": "^2.1.3",
     "react-app-rewired": "^1.6.2",
     "ts-import-plugin": "^1.5.5",
