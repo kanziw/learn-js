@@ -1,19 +1,22 @@
 import * as React from 'react'
-import { graphql } from 'react-apollo'
+import { QueryResult } from 'react-apollo'
 import GlobalStyle from '../../global-styles'
 import theme from '../../theme'
 import { ThemeProvider } from '../../typed-components'
+import { Auth, LogUserInVariables } from '../../types/apiSelf'
 import AppPresenter from './AppPresenter'
-import { IS_LOGGED_IN } from './AppQueries.local'
 
-// @ts-ignore
-const AppContainer: React.FunctionComponent = ({ data }) => (
+interface AuthQuery extends QueryResult<Auth, LogUserInVariables> {}
+
+interface AppContainer extends React.FunctionComponent<AuthQuery> {}
+
+const AppContainer: AppContainer = ({ data }) => (
   <ThemeProvider theme={theme}>
     <>
       <GlobalStyle />
-      <AppPresenter isLoggedIn={data.auth.isLoggedIn} />
+      <AppPresenter isLoggedIn={data!.auth.isLoggedIn} />
     </>
   </ThemeProvider>
 )
 
-export default graphql(IS_LOGGED_IN)(AppContainer)
+export default AppContainer
