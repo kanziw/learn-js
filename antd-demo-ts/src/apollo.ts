@@ -1,48 +1,25 @@
 import ApolloClient, { InMemoryCache, Operation } from 'apollo-boost'
+import { LogUserInVariables } from './types/apiSelf'
+import { generateAuthData, getToken, removeUserCredential, setUserCredential } from './utils/credential'
 
-const TOKEN_KEY = 'githubToken'
-const getToken = () => {
-  const token = localStorage.getItem(TOKEN_KEY)
-  if (token) {
-    return token
-  } else {
-    return ''
-  }
+interface IContext {
+  cache: InMemoryCache
 }
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   clientState: {
-    defaults: {
-      auth: {
-        __typename: 'Auth',
-        isLoggedIn: Boolean(getToken()),
-      },
-    },
+    defaults: { ...generateAuthData() },
     resolvers: {
       Mutation: {
-        logUserIn: (_: any, { token }: { token: string }, { cache }: IContext) => {
-          localStorage.setItem(TOKEN_KEY, token)
-          cache.writeData({
-            data: {
-              auth: {
-                __typename: 'Auth',
-                isLoggedIn: true,
-              },
-            },
-          })
+        logUserIn: (_: any, logUserInVariable: LogUserInVariables, { cache }: IContext) => {
+          setUserCredential(logUserInVariable)
+          cache.writeData({ data: generateAuthData(true) })
           return null
         },
         logUserOut: (_: any, __: any, { cache }: IContext) => {
-          localStorage.removeItem(TOKEN_KEY)
-          cache.writeData({
-            data: {
-              auth: {
-                __typename: 'Auth',
-                isLoggedIn: false,
-              },
-            },
-          })
+          removeUserCredential()
+          cache.writeData({ data: generateAuthData(false) })
           return null
         },
       },
@@ -59,7 +36,3 @@ const client = new ApolloClient({
 })
 
 export default client
-
-interface IContext {
-  cache: InMemoryCache
-}

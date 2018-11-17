@@ -8,18 +8,32 @@ interface IProps {
   logUserIn: MutationFn
 }
 
+const onInputChanger = (setter: (value: string) => void): ((e: ChangeEvent<HTMLInputElement>) => void) =>
+  (e: ChangeEvent<HTMLInputElement>) => setter(e.target.value)
+
 const LoginPresenter: React.FunctionComponent<IProps> = ({ logUserIn }) => {
+  const [ userName, setUserName ] = useState('')
   const [ token, setToken ] = useState('')
-  const onTokenInputChange = (e: ChangeEvent<HTMLInputElement>) => setToken(e.target.value)
+
+  const onUserNameInputChange = onInputChanger(setUserName)
+  const onTokenInputChange = onInputChanger(setToken)
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-    return logUserIn({ variables: { token } })
+    return logUserIn({ variables: { userName, token } })
   }
 
   return (
     <Form onSubmit={handleSubmit} className="login-form">
-      <Form.Item> Log in required! </Form.Item>
+      <Form.Item>
+        <Input
+          prefix={<Icon type="user" style={StyleInputAlpha} />}
+          placeholder="User name"
+          value={userName}
+          onChange={onUserNameInputChange}
+          onPressEnter={handleSubmit}
+        />
+      </Form.Item>
       <Form.Item>
         <Input
           prefix={<Icon type="lock" style={StyleInputAlpha} />}
