@@ -1,18 +1,18 @@
 import { Button } from 'antd'
 import React from 'react'
-import { User_user } from '../../types/api'
+import { Viewer_viewer } from '../../types'
 
 interface Props {
-  user: User_user
+  me: Viewer_viewer
   logOut: (e: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 interface HomePresenter extends React.FunctionComponent<Props> {}
 
-const HomePresenter: HomePresenter = ({ user, logOut }) => (
+const HomePresenter: HomePresenter = ({ me, logOut }) => (
   <>
     <h1>YOU ARE LOGGED IN!</h1>
-    <div>{JSON.stringify(user, null, 2)}</div>
+    <div>{JSON.stringify(me, null, 2)}</div>
     <Button type="primary" onClick={logOut} block={true}>
       LOGOUT
     </Button>

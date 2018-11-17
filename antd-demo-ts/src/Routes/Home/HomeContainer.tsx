@@ -1,11 +1,11 @@
 import React from 'react'
 import { Mutation, MutationFn, QueryResult } from 'react-apollo'
-import { User, UserVariables } from '../../types/api'
+import { Viewer } from '../../types'
 import HomePresenter from './HomePresenter'
 
-interface LogInQuery extends QueryResult<User, UserVariables> {}
+interface LogInQuery extends QueryResult<Viewer> {}
 
-interface LogOutMutation extends Mutation<{}, {}> {
+interface LogOutMutation extends Mutation {
   logOutUser: MutationFn
 }
 
@@ -18,9 +18,8 @@ const HomeContainer: HomeContainer = ({ error, loading, data, logOutUser }) => {
   }
   if (loading) { return <h1>Loading...</h1> }
 
-  const user = data!.user!
   const logOut = () => logOutUser()
-  return <HomePresenter user={user} logOut={logOut} />
+  return <HomePresenter me={data!.viewer} logOut={logOut} />
 }
 
 export default HomeContainer

@@ -3,7 +3,7 @@ import { QueryResult } from 'react-apollo'
 import GlobalStyle from '../../global-styles'
 import theme from '../../theme'
 import { ThemeProvider } from '../../typed-components'
-import { Auth, LogUserInVariables } from '../../types/apiSelf'
+import { Auth, LogUserInVariables } from '../../types'
 import AppPresenter from './AppPresenter'
 
 interface AuthQuery extends QueryResult<Auth, LogUserInVariables> {}

@@ -1,5 +1,5 @@
 import ApolloClient, { InMemoryCache, Operation } from 'apollo-boost'
-import { LogUserInVariables } from './types/apiSelf'
+import { LogUserInVariables } from './types'
 import { generateAuthData, getToken, removeUserCredential, setUserCredential } from './utils/credential'
 
 interface IContext {

@@ -1,4 +1,4 @@
-import { Credential, LogUserInVariables } from '../types/apiSelf'
+import { Credential, LogUserInVariables } from '../types'
 
 const LOCAL_STORAGE_CRED_KEY = 'CredGithub'
 const SECOND = 1000
