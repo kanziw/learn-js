@@ -1,4 +1,5 @@
 import ApolloClient, { InMemoryCache, Operation } from 'apollo-boost'
+import { toast } from 'react-toastify'
 import { LogUserInVariables } from './types'
 import { generateAuthData, getToken, removeUserCredential, setUserCredential } from './utils/credential'
 
@@ -24,6 +25,16 @@ const client = new ApolloClient({
         },
       },
     },
+  },
+  onError: ({ graphQLErrors, networkError }) => {
+    if (graphQLErrors) {
+      graphQLErrors.map(({ message }) => {
+        toast.error(`Unexpected error: ${message}`)
+      })
+    }
+    if (networkError) {
+      toast.error(`Network error: ${networkError}`)
+    }
   },
   request: async (operation: Operation) => {
     operation.setContext({
