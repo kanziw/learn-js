@@ -4,7 +4,9 @@
   "description": "Learn zero-configuration service",
   "main": "index.js",
   "scripts": {
-    "start": "zero"
+    "dev": "zero",
+    "build": "zero build",
+    "start": "NODE_ENV=production zero"
   },
   "keywords": [],
   "author": "kanziw <kanziwoong@gmail.com>",
