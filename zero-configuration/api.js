@@ -1,3 +1,8 @@
+const { AUTHOR } = require('./const')
+
 module.exports = (req, res) => {
-  res.json({ text: 'Place your Node.js API here.' })
+  res.json({
+    AUTHOR,
+    text: 'Place your Node.js API here.'
+  })
 }
