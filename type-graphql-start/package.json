@@ -4,6 +4,7 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
+    "lint": "tslint --project tsconfig.json",
     "start": "ts-node-dev --respawn src/index.ts"
   },
   "dependencies": {
@@ -37,6 +38,8 @@
     "nodemon": "^1.18.9",
     "ts-node": "^7.0.1",
     "ts-node-dev": "^1.0.0-pre.39",
+    "tslint": "^5.17.0",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.2.2"
   }
 }
