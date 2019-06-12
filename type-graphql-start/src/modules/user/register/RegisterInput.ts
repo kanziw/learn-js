@@ -1,22 +1,22 @@
-import { Length, IsEmail } from "class-validator";
-import { Field, InputType } from "type-graphql";
-import { IsEmailAlreadyExist } from "./isEmailAlreadyExist";
+import { IsEmail, Length } from 'class-validator'
+import { Field, InputType } from 'type-graphql'
+import { IsEmailAlreadyExist } from './isEmailAlreadyExist'
 
 @InputType()
 export class RegisterInput {
   @Field()
   @Length(1, 255)
-  firstName: string;
+  firstName: string
 
   @Field()
   @Length(1, 255)
-  lastName: string;
+  lastName: string
 
   @Field()
   @IsEmail()
-  @IsEmailAlreadyExist({ message: "email already in use" })
-  email: string;
+  @IsEmailAlreadyExist({ message: 'email already in use' })
+  email: string
 
   @Field()
-  password: string;
+  password: string
 }
