@@ -4,17 +4,16 @@ import cors from 'cors'
 import Express from 'express'
 import session from 'express-session'
 import 'reflect-metadata'
-import { buildSchema, formatArgumentValidationError } from 'type-graphql'
+import { formatArgumentValidationError } from 'type-graphql'
 import { createConnection } from 'typeorm'
 
 import { redis } from './redis'
+import { createSchema } from './utils/createSchema'
 
 const main = async () => {
   await createConnection()
 
-  const schema = await buildSchema({
-    resolvers: [ __dirname + '/modules/**/*.ts' ],
-  })
+  const schema = await createSchema()
 
   const apolloServer = new ApolloServer({
     schema,
