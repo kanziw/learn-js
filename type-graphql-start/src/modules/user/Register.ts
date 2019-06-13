@@ -3,7 +3,6 @@ import { Arg, Mutation, Query, Resolver, UseMiddleware } from 'type-graphql'
 
 import { User } from '../../entity/User'
 import { isAuth } from '../middleware/isAuth'
-import { logger } from '../middleware/logger'
 import { createConfirmationUrl } from '../utils/createConfirmationUrl'
 import { sendEmail } from '../utils/sendEmail'
 import { RegisterInput } from './register/RegisterInput'
@@ -11,7 +10,7 @@ import { RegisterInput } from './register/RegisterInput'
 @Resolver(User)
 export class RegisterResolver {
   @Query(() => String)
-  @UseMiddleware(isAuth, logger)
+  @UseMiddleware(isAuth)
   async hello() {
     return 'Hello World!'
   }

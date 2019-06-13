@@ -20,7 +20,7 @@ const main = async () => {
     schema,
     // @ts-ignore
     formatError: formatArgumentValidationError,
-    context: ({ req }: any) => ({ req }),
+    context: ({ req, res }: any) => ({ req, res }),
   })
 
   const app = Express()
