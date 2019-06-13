@@ -1,7 +1,10 @@
-import { createConnection } from 'typeorm'
+import { Connection, createConnection } from 'typeorm'
 
-export const testConn = (drop: boolean = false) => {
-  return createConnection({
+let conn: Connection
+let refCnt = 0
+
+export const testConn = async (drop: boolean = false) => {
+  conn = await createConnection({
     type: 'mysql',
     host: 'localhost',
     port: 3306,
@@ -12,4 +15,18 @@ export const testConn = (drop: boolean = false) => {
     dropSchema: drop,
     entities: [ __dirname + '/../entity/*.*' ],
   })
+  refCnt += 1
+  return conn
+}
+
+export const closeConn = async () => {
+  if (refCnt > 0) {
+    refCnt -= 1
+    return
+  }
+  if (refCnt === 0) {
+    return conn && conn.close()
+  }
+
+  throw Error(`Unexpected DB conn ${{ refCnt }}`)
 }

@@ -7,11 +7,9 @@ import { closeConn, testConn } from '../../../test-utils/testConn'
 beforeAll(() => testConn())
 afterAll(closeConn)
 
-const registerMutation = `
-mutation Register($data: RegisterInput!) {
-  register(
-    data: $data
-  ) {
+const meQuery = `
+ {
+  me {
     id
     firstName
     lastName
@@ -21,37 +19,41 @@ mutation Register($data: RegisterInput!) {
 }
 `
 
-describe('Register', () => {
-  it('create user', async () => {
-    jest.setTimeout(30000)
-
-    const user = {
+describe('Me', () => {
+  it('get user', async () => {
+    const user = await User.create({
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       email: faker.internet.email(),
       password: faker.internet.password(),
-    }
+    }).save()
 
     const response = await gCall({
-      source: registerMutation,
-      variableValues: {
-        data: user,
-      },
+      source: meQuery,
+      userId: user.id,
     })
 
     await expect(response).toMatchObject({
       data: {
-        register: {
+        me: {
+          id: `${user.id}`,
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
         },
       },
     })
+  })
 
-    const dbUser = await User.findOne({ where: { email: user.email } })
-    expect(dbUser).toBeDefined()
-    expect(dbUser!.confirmed).toBeFalsy()
-    expect(dbUser!.firstName).toBe(user.firstName)
+  it('return null', async () => {
+    const response = await gCall({
+      source: meQuery,
+    })
+
+    await expect(response).toMatchObject({
+      data: {
+        me: null,
+      },
+    })
   })
 })
