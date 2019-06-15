@@ -1,0 +1,48 @@
+{
+	"info": {
+		"_postman_id": "4859a29b-34a3-4d11-b317-f9549a90fd19",
+		"name": "Type-Graphql",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AddProfilePicture",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "operations",
+							"value": "{\"query\":\"mutation AddProfilePicture($picture: Upload!) {\\n  addProfilePicture(picture: $picture)\\n}\"}",
+							"type": "text"
+						},
+						{
+							"key": "map",
+							"value": "{\"0\": [\"variables.picture\"] }",
+							"type": "text"
+						},
+						{
+							"key": "0",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:4000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
