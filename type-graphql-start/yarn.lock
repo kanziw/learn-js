@@ -489,6 +489,13 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
+"@types/graphql-query-complexity@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@types/graphql-query-complexity/-/graphql-query-complexity-0.1.2.tgz#e13df7a3ea02651e23265ef0a75848a6f47dc20c"
+  integrity sha512-/Bw1IzDqAViNLb2lovZNLqqJo99ARnQWhS/v0pP7mNruzSLPEam25acP+gyRFEHzVkrpQfNBcK+yEoz70jS64A==
+  dependencies:
+    "@types/graphql" "*"
+
 "@types/graphql-upload@^8.0.0":
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/@types/graphql-upload/-/graphql-upload-8.0.0.tgz#cf1a464e1ad3d185d6e1d77b5df0ca26057a572c"
@@ -2331,6 +2338,13 @@ graphql-query-complexity@^0.2.2:
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/graphql-query-complexity/-/graphql-query-complexity-0.2.3.tgz#ca26790fd5d22cb3d4ca8f43d19605929d8cf27f"
   integrity sha512-XLvEsqGTJmJmgof8u5NjIkBHL75b4Inw1F8JQ3jGRBhr3hVFx6aWOTL7C2aknp1uIh8dRmqwzrb9gas2NLHnfA==
+  dependencies:
+    lodash.get "^4.4.2"
+
+graphql-query-complexity@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/graphql-query-complexity/-/graphql-query-complexity-0.3.0.tgz#71a44e124b7591a185d9d8cde55205aa57680c5d"
+  integrity sha512-JVqHT81Eh9O17iOjs1r1qzsh5YY2upfA3zoUsQGggT4d+1hajWitk4GQQY5SZtq5eul7y6jMsM9qRUSOAKhDJQ==
   dependencies:
     lodash.get "^4.4.2"
 

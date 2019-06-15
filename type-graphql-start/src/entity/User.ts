@@ -20,7 +20,7 @@ export class User extends BaseEntity {
   @Column({ unique: true })
   email: string
 
-  @Field()
+  @Field({ complexity: 3 })
   get name(): string {
     return `${this.firstName} ${this.lastName}`
   }
