@@ -25,7 +25,7 @@
     "nodemailer": "^6.2.1",
     "reflect-metadata": "^0.1.12",
     "type-graphql": "^0.16.0",
-    "typeorm": "^0.2.18",
+    "typeorm": "^0.2.25",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
