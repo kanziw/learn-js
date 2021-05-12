@@ -22,7 +22,7 @@
     "graphql-upload": "^8.0.7",
     "ioredis": "^4.10.0",
     "mysql": "^2.17.1",
-    "nodemailer": "^6.2.1",
+    "nodemailer": "^6.4.16",
     "reflect-metadata": "^0.1.12",
     "type-graphql": "^0.16.0",
     "typeorm": "^0.2.18",
